@@ -17,7 +17,7 @@ Inserimento arrayList: 25 O(n) lavorando con gli indici devo scorrere tutti gli 
 Inserimento linkedList: 130 O(1) lavorando a riferimenti posso inserire/rimuovere più efficientemente i dati. se rimuovo un dato i nodi si riformano
 Inserimento Treemap: 235 O(N*log(n)) //Perché la devo riadattare
 Inserimento hashMap: 81 O(1) se ci sono pochi valori, di più se ce ne sono moltissimi
-Nel caso migliore è O(1), nel caso peggiore è O(n) perché sono presenti dei bucket 
+Nel caso migliore è O(1), nel caso peggiore è O(N/16) perché sono presenti dei bucket sono 16 bucket, quindi dipende dall'insieme di elementi e del bucket
 	
 rimozione dati (index = 42) [ns]:	
 Rimozione hashMap: 12200 1°

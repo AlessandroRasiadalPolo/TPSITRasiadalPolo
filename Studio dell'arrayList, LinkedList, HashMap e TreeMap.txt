@@ -1,0 +1,26 @@
+Studio dell'arrayList, LinkedList, HashMap e TreeMap
+
+
+Nell'arrayList creo solo l'Array, mentre nella linkedList devo creare anche le istanze dei nodi e collegarli perché non sono salvati uno vicino all'altro.
+
+Una Hashmap richiede meno tempo per l'inserimento e la cancellazione dei dati perché non è ordinata a differenza della TreeMap che deve essere sempre ordinata. Quando una hashmap
+
+creazione istanza [ns]:
+Tempo trascorso linkedList: 53500 3°
+Tempo trascorso arrList: 17500	1°
+Tempo trascorso Treemap: 82300	4°
+Tempo trascorso HashMap: 21900	2°
+
+
+Inserimento dati (999999) [ms]:
+Inserimento arrayList: 25 O(n) lavorando con gli indici devo scorrere tutti gli elementi. Se rimuovo un dato in mezzo rimane null
+Inserimento linkedList: 130 O(1) lavorando a riferimenti posso inserire/rimuovere più efficientemente i dati. se rimuovo un dato i nodi si riformano
+Inserimento Treemap: 235 O(log(n))
+Inserimento hashMap: 81 O(1) se ci sono pochi valori, di più se ce ne sono moltissimi
+Nel caso migliore è O(1), nel caso peggiore è O(n) perché sono presenti dei bucket 
+	
+rimozione dati (index = 42) [ns]:	
+Rimozione hashMap: 12200 1°
+Rimozione treemap: 150400 4°
+Rimozione linkedList: 30900 3°
+Rimozione arrayList: 27500 2°

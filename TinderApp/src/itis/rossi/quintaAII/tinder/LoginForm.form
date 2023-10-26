@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="itis.rossi.quintaAII.tinder.LoginForm">
+  <grid id="27dc6" binding="pnlLogin" layout-manager="GridBagLayout">
+    <constraints>
+      <xy x="108" y="93" width="676" height="586"/>
+    </constraints>
+    <properties>
+      <minimumSize width="103" height="415"/>
+      <preferredSize width="200" height="300"/>
+    </properties>
+    <border type="none"/>
+    <children>
+      <component id="32984" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="2" fill="0" indent="0" use-parent-layout="false"/>
+          <gridbag top="40" left="0" bottom="0" right="0" weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <font name="Arial Black" size="24" style="0"/>
+          <text value="SIGN IN"/>
+        </properties>
+      </component>
+      <component id="acf69" class="javax.swing.JTextField" binding="txtName">
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+          <gridbag top="40" left="20" bottom="30" right="20" weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <font name="JetBrains Mono ExtraBold" size="18"/>
+          <margin top="2" left="6" bottom="2" right="6"/>
+          <preferredSize width="49" height="40"/>
+          <text value=""/>
+          <toolTipText value="Inserisci il tuo Nome Utente"/>
+        </properties>
+      </component>
+      <component id="c2a31" class="javax.swing.JPasswordField" binding="txtPassword">
+        <constraints>
+          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+          <gridbag top="0" left="20" bottom="0" right="20" weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <focusable value="true"/>
+          <font name="JetBrains Mono ExtraBold" size="18"/>
+          <preferredSize width="49" height="40"/>
+          <text value=""/>
+          <toolTipText value="Inserisci la tua password"/>
+        </properties>
+      </component>
+      <component id="61443" class="javax.swing.JButton" binding="btnSomma">
+        <constraints>
+          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="3" anchor="0" fill="0" indent="10" use-parent-layout="false"/>
+          <gridbag top="0" left="0" bottom="1" right="0" weightx="1.0" weighty="1.0"/>
+        </constraints>
+        <properties>
+          <horizontalAlignment value="0"/>
+          <preferredSize width="150" height="50"/>
+          <text value="Button"/>
+        </properties>
+      </component>
+    </children>
+  </grid>
+</form>

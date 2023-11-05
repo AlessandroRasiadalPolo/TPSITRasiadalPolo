@@ -5,6 +5,9 @@ import java.sql.*;
 
 public class DB {
 
+    //Mi salvo l'utente corrente
+    public static User activeUser;
+
     private Connection connect() {
         //Prima cerco di instaurare una connessione e dopo l'utente potrà decidere come interrogare il DB
         final String DATABASE_URL = "jdbc:mysql://localhost:3306/utenti";
@@ -57,7 +60,6 @@ public class DB {
         Connection conn = connect();
         Statement stmt = conn.createStatement();
 
-
         String sql = "INSERT INTO utenti (Name, Surname, Nickname, Password, age) VALUES " +
                      "(?, ?, ?, ?, ?)";
 
@@ -69,6 +71,7 @@ public class DB {
         preparedStatement.setInt(5, age);
 
         preparedStatement.executeUpdate();
+        activeUser = new User(Name, Surname, age, Nickname, password);
 
         stmt.close();
         conn.close();
@@ -95,6 +98,7 @@ public class DB {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if(resultSet.next()) {
+                activeUser = new User(resultSet.getString("Name"), resultSet.getString("Surname"), resultSet.getInt("age"), Nickname, password);
                 System.out.println("Login avvenuto con successo!");
                 stmt.close();
                 conn.close();
@@ -119,5 +123,29 @@ public class DB {
         }
 
 
+    }
+
+    public int registraCronologia(String equazione) {
+        if(equazione.isEmpty() || activeUser.getNickname().isEmpty())
+            return -1;
+
+        Connection conn = connect();
+        try {
+            Statement statement = conn.createStatement();
+            String sql = "INSERT INTO cronologia(NicknameUtente, equazione) VALUES" +
+                    "(?, ?)";
+
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setString(1, activeUser.getNickname());
+            preparedStatement.setString(2, equazione);
+            preparedStatement.executeUpdate();
+            statement.close();
+            conn.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return 1;
     }
 }

@@ -1,5 +1,7 @@
 package Calcolatrice.RNP;
 
+import Database.Connector.DB;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -269,7 +271,9 @@ public class CalculatorForm {
         btnExecute.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                DB db = new DB();
                 float ris = 0;
+
                 //Rimuove TUTTI i valori che soddisfano la condizione
                 equazione.removeIf(String::isEmpty);
                 if(rdbNormal.isSelected()) {
@@ -291,6 +295,9 @@ public class CalculatorForm {
                     }
 
                 }
+
+                //Salvo il risultato ottenuto
+                db.registraCronologia(lblOutput.getText());
 
                 lblOutput.setText(Float.toString(ris));
                 equazione.clear();

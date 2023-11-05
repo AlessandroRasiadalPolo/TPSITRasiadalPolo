@@ -148,4 +148,25 @@ public class DB {
 
         return 1;
     }
+
+    public String stampaInformazioni(){
+        Connection conn = connect();
+        String ris = "";
+        try{
+            Statement statement = conn.createStatement();
+            String sql = "SELECT * FROM cronologia WHERE NicknameUtente = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setString(1, activeUser.getNickname());
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while(resultSet.next()){
+                ris += "id: " + resultSet.getInt("id") + "\n" +
+                        "Nickname:" + resultSet.getString("NicknameUtente") + "\n" +
+                        "equazione: " + resultSet.getString("equazione") + "\n";
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return ris;
+    }
 }

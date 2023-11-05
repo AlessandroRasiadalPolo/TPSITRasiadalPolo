@@ -303,6 +303,10 @@ public class CalculatorForm {
                 equazione.clear();
                 indexS = 0;
 
+            int scelta = JOptionPane.showConfirmDialog(null, "Vuoi vedere la tua cronologia?", "si", JOptionPane.YES_NO_OPTION);
+             if(scelta == JOptionPane.YES_OPTION)
+                 JOptionPane.showMessageDialog(null, db.stampaInformazioni());
+
             }
         });
         btnMinus.addActionListener(new ActionListener() {

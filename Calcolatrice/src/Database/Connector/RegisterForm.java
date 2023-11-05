@@ -38,8 +38,10 @@ public class RegisterForm {
                         frameCalc.setSize(450,450);
                         frameCalc.setVisible(true);
                     }
+                    else if(db.register(name, surname, nickname, password, age) == -2)
+                        JOptionPane.showMessageDialog(null, "Questo Nickname è già in uso!");
                     else
-                        JOptionPane.showMessageDialog(null, "Login fallito");
+                        JOptionPane.showMessageDialog(null, "Login fallito!");
 
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);

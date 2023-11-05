@@ -43,7 +43,6 @@ public class Calcolatrice {
     }
 
     public String[] traduciRPN(String[] input) throws Exception {
-
         List<String> ris = new ArrayList<>();
         Stack<String> output = new Stack<>();
         Stack<String> operandi = new Stack<>();

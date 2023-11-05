@@ -1,5 +1,6 @@
 package Database.Connector;
 
+import javax.swing.plaf.nimbus.State;
 import java.sql.*;
 
 public class DB {
@@ -14,10 +15,34 @@ public class DB {
         try {
             conn = DriverManager.getConnection(DATABASE_URL, USERNAME, PASSWORD);
 
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return conn;
+    }
+    private boolean userExists(String Nickname){
+        boolean ris = false;
+        try{
+            Connection conn = connect();
+            String sql = "SELECT Count(*) FROM utenti WHERE Nickname = ?";
+            Statement stmt = conn.createStatement();
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+
+            preparedStatement.setString(1, Nickname);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if(resultSet.getInt(1) == 1)
+                ris = true;
+
+        }catch(SQLException e)
+        {
+            System.out.println("Connessione fallita!");
+            e.printStackTrace();
+        }
+        return ris;
+
     }
 
     public int register(String Name, String Surname, String Nickname, String password, int age) throws SQLException {
@@ -25,8 +50,14 @@ public class DB {
         if(Name.isEmpty() || Surname.isEmpty() || Nickname.isEmpty() || password.isEmpty() || age <= 0)
             return -1;
 
+        //Controllo se esiste già un utente con lo stesso Nickname
+        if(userExists(Nickname))
+            return -2;
+
         Connection conn = connect();
         Statement stmt = conn.createStatement();
+
+
         String sql = "INSERT INTO utenti (Name, Surname, Nickname, Password, age) VALUES " +
                      "(?, ?, ?, ?, ?)";
 
@@ -47,7 +78,11 @@ public class DB {
     }
 
     public int login(String Nickname, String password) {
+        if(Nickname.isEmpty() || password.isEmpty())
+            return -1;
+
         Connection conn = connect();
+
 
         try {
             Statement stmt = conn.createStatement();

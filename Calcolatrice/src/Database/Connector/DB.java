@@ -125,19 +125,20 @@ public class DB {
 
     }
 
-    public int registraCronologia(String equazione) {
+    public int registraCronologia(String equazione, float risultato) {
         if(equazione.isEmpty() || activeUser.getNickname().isEmpty())
             return -1;
 
         Connection conn = connect();
         try {
             Statement statement = conn.createStatement();
-            String sql = "INSERT INTO cronologia(NicknameUtente, equazione) VALUES" +
-                    "(?, ?)";
+            String sql = "INSERT INTO cronologia(NicknameUtente, equazione, risultato) VALUES" +
+                    "(?, ?, ?)";
 
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setString(1, activeUser.getNickname());
             preparedStatement.setString(2, equazione);
+            preparedStatement.setString(3, String.valueOf(risultato));
             preparedStatement.executeUpdate();
             statement.close();
             conn.close();

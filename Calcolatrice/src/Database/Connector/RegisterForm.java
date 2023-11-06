@@ -16,13 +16,13 @@ public class RegisterForm {
     private JPasswordField txtPassword;
     private JTextField txtAge;
     public JPanel pnlRegister;
+    private DB db = new DB();
 
 
     public RegisterForm() {
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                DB db = new DB();
                 JFrame frameCalc;
                 String name = txtName.getText();
                 String surname = txtSurname.getText();
@@ -32,7 +32,7 @@ public class RegisterForm {
 
                 try {
                     if(db.register(name, surname, nickname, password, age) == 1){
-                        frameCalc = new JFrame("Calcolatrice");
+                        frameCalc = new JFrame(DB.activeUser.getNickname());
                         frameCalc.setContentPane(new CalculatorForm().pnlCalcolatrice);
                         frameCalc.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                         frameCalc.setSize(450,450);

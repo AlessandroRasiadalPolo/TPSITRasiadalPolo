@@ -15,5 +15,6 @@ CREATE TABLE IF NOT EXISTS cronologia(
     id int NOT NULL AUTO_INCREMENT,
     NicknameUtente varchar(40) NOT NULL,
     equazione varchar(50) NOT NULL,
+    risultato int NOT NULL,
     PRIMARY KEY(id)
 );

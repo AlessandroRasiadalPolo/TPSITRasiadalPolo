@@ -16,7 +16,7 @@ public class LoginForm {
     private JPasswordField txtPassword;
     private JButton loginButton;
     private JButton registerButton;
-    private DB db;
+    private DB db = new DB();
 
     public LoginForm() {
         loginButton.addActionListener(new ActionListener() {
@@ -25,9 +25,8 @@ public class LoginForm {
                 String nickname = txtNickname.getText();
                 String password = new String(txtPassword.getPassword());
                 JFrame frameCalc;
-                db = new DB();
                 if(db.login(nickname, password) == 1){
-                    frameCalc = new JFrame("Calcolatrice");
+                    frameCalc = new JFrame(DB.activeUser.getNickname());
                     frameCalc.setContentPane(new CalculatorForm().pnlCalcolatrice);
                     frameCalc.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                     frameCalc.setSize(450,450);

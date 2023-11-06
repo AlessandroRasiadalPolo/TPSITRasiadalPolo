@@ -297,7 +297,7 @@ public class CalculatorForm {
                 }
 
                 //Salvo il risultato ottenuto
-                db.registraCronologia(lblOutput.getText());
+                db.registraCronologia(lblOutput.getText(), ris);
 
                 lblOutput.setText(Float.toString(ris));
                 equazione.clear();

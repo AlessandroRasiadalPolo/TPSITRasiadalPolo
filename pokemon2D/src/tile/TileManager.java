@@ -14,6 +14,7 @@ public class TileManager {
     GamePanel gp;
     Tile[] tile;
     int mapTileNum[][];
+    private int countMap = 0;
 
     public TileManager(GamePanel gp){
         this.gp = gp;
@@ -21,8 +22,9 @@ public class TileManager {
         mapTileNum = new int[gp.MAXSCREENCOL][gp.MAXSCREENROW];
 
         getTileImage();
-        loadMap();
+        //loadMap();
     }
+
 
     public void getTileImage(){
 
@@ -67,9 +69,18 @@ public class TileManager {
     public void loadMap(){
 
         try{
+               InputStream is = null;
+               if(countMap > 300) {
+                   is = getClass().getResourceAsStream("/maps/map1.txt");
+                   countMap = 0;
+               }
+               else{
+                   is = getClass().getResourceAsStream("/maps/map2.txt");
+                   countMap++;
+               }
 
-            InputStream is = getClass().getResourceAsStream("/maps/map1.txt");
-            assert is != null;
+
+
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             String line;
             int col = 0, row = 0;
@@ -83,11 +94,10 @@ public class TileManager {
                     int num = Integer.parseInt(numbers[col]);
                     mapTileNum[col][row] = num;
                     col++;
-
-                    if(col == gp.MAXSCREENCOL){
-                        col = 0;
-                        row++;
-                    }
+                }
+                if(col == gp.MAXSCREENCOL){
+                    col = 0;
+                    row++;
                 }
 
 
@@ -101,7 +111,7 @@ public class TileManager {
     }
 
     public void draw(Graphics2D g2){
-
+        loadMap();
         //g2.drawImage(tile[0].image, 0, 0, gp.TILESIZE, gp.TILESIZE, null); See if draw correctly
 
         int col = 0, row = 0, x = 0, y = 0;

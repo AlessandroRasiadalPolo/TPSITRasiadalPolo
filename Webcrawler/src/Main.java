@@ -9,8 +9,8 @@ public class Main {
        String siteName;
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("Inserisci il nome del sito: ");
-          siteName = sc.next();
+        /*System.out.println("Inserisci il nome del sito: ");
+          siteName = sc.next();*/
 
 
         /*if(!siteUrl.equals("")){
@@ -20,7 +20,7 @@ public class Main {
 
         else
             System.out.println("Sito non trovato! Riprova");
-            
+
          */
 
 

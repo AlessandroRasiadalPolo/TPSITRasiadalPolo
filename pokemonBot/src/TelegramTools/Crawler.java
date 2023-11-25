@@ -1,3 +1,6 @@
+package TelegramTools;
+
+import Entities.Pokemon;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -5,15 +8,13 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.io.StringReader;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 
 public class Crawler {
 
     static Elements pokemontable;
+    private static ArrayList<Pokemon> pokemons = new ArrayList<Pokemon>();
     private static ArrayList<String> rows = new ArrayList<String>();
 
     public static void crawl(int level, String url, ArrayList<String> urlVisited){
@@ -24,13 +25,31 @@ public class Crawler {
             Elements rows = pokemontable.select("tr"); // ottieni tutte le righe della tabella
 
             for (Element row : rows) {
+                Pokemon newPokemon = new Pokemon();
                 Elements columns = row.select("td"); // ottieni tutte le colonne della riga
                 for (Element column : columns) {
-                    // fai qualcosa con il contenuto della colonna, ad esempio stampalo a schermo
-                    System.out.print(column.text() + "\t");
+
+                    int types = 0;
+                    String tagClass = column.className();
+                    if(tagClass.equals("nomeleft"))
+                        newPokemon.setPokemonName(column.text());
+
+                    else if(tagClass.contains("boldBianco") && types == 0) {
+                        newPokemon.setPrimaryType(column.text());
+                        types++;
+                    }
+                    else if(tagClass.contains("boldBianco") && types == 1)
+                        newPokemon.setSecondaryType(column.text());
+
+
                 }
-                System.out.println(); // vai a capo dopo aver stampato tutte le colonne di una riga
+                if(!newPokemon.getPokemonName().isEmpty())
+                    pokemons.add(newPokemon);
+
             }
+           /* for(Entities.Pokemon p : pokemons)
+                System.out.println(p.getPokemonName());
+            */
 
 
         }

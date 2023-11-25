@@ -1,6 +1,4 @@
-import org.telegram.telegrambots.meta.TelegramBotsApi;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
+import TelegramTools.Crawler;
 
 import java.util.ArrayList;
 
@@ -8,7 +6,7 @@ public class Main {
     public static void main(String[] args) {
         /*try {
             TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
-            botsApi.registerBot(new PokemonBot());
+            botsApi.registerBot(new TelegramTools.PokemonBot());
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }*/

@@ -24,7 +24,7 @@ public class Main {
          */
 
 
-        Crawler.crawl(0,"https://it.wikipedia.org/wiki/Pagina_principale", new ArrayList<String>());
+        Crawler.crawl(0,"https://pwtng.altervista.org/ricerca-pokedex/", new ArrayList<String>());
 
 
 

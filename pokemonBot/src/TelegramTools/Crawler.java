@@ -31,10 +31,14 @@ public class Crawler {
         Document doc = null;
         doc = request(url, urlVisited);
         if(doc != null) {
+            //Prendo gli elementi all'interno dei tag ul
             Elements elements = doc.select("ul");
 
+            //Scorro gli ul
             for(Element link : elements){
+                //Seleziono i li
                 Elements li = link.select("a[href]");
+                //Per ogni li prendo i gli url
                 for(Element element : li)
                     crawl(element.absUrl("href"), urlVisited);
             }

@@ -10,7 +10,7 @@ public class Main {
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }*/
-        Crawler.crawl(0,"https://pwtng.altervista.org/ricerca-pokedex/", new ArrayList<String>());
+        Crawler.crawl("https://www.smogon.com/dex/", new ArrayList<String>());
     }
 
     }

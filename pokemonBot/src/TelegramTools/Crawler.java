@@ -1,57 +1,53 @@
 package TelegramTools;
 
 import Entities.Pokemon;
+import org.graalvm.polyglot.Context;
+import org.graalvm.polyglot.Value;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
+import javax.script.Invocable;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
 import java.io.IOException;
 import java.util.ArrayList;
 
 
 public class Crawler {
 
-    static Elements pokemontable;
-    private static ArrayList<Pokemon> pokemons = new ArrayList<Pokemon>();
-    private static ArrayList<String> rows = new ArrayList<String>();
 
-    public static void crawl(int level, String url, ArrayList<String> urlVisited){
+    /*
+    I link che sto cercando di analizzare si trovano all'interno di funzioni javascript Onclick, quindi devo ricavare glu url dalla funzione
+     */
+
+
+
+    public static void crawl(String url, ArrayList<String> urlVisited){
+
         Document doc = null;
         doc = request(url, urlVisited);
         if(doc != null) {
-            pokemontable = doc.select("table");
-            Elements rows = pokemontable.select("tr"); // ottieni tutte le righe della tabella
+            Elements elements = doc.select("ul");
 
-            for (Element row : rows) {
-                Pokemon newPokemon = new Pokemon();
-                Elements columns = row.select("td"); // ottieni tutte le colonne della riga
-                for (Element column : columns) {
-
-                    int types = 0;
-                    String tagClass = column.className();
-                    if(tagClass.equals("nomeleft"))
-                        newPokemon.setPokemonName(column.text());
-
-                    else if(tagClass.contains("boldBianco") && types == 0) {
-                        newPokemon.setPrimaryType(column.text());
-                        types++;
-                    }
-                    else if(tagClass.contains("boldBianco") && types == 1)
-                        newPokemon.setSecondaryType(column.text());
-
-
-                }
-                if(!newPokemon.getPokemonName().isEmpty())
-                    pokemons.add(newPokemon);
-
+            for(Element link : elements){
+                Elements li = link.select("a[href]");
+                for(Element element : li)
+                    crawl(element.absUrl("href"), urlVisited);
             }
-           /* for(Entities.Pokemon p : pokemons)
-                System.out.println(p.getPokemonName());
-            */
 
+        }
+    }
 
+    private static void crawlPokemon(String pokemonUrl){
+        Document pokemonDoc = request(pokemonUrl, new ArrayList<>());
+        if (pokemonDoc != null) {
+            Elements section = pokemonDoc.select("section pokedex-pokemon-details");
+            for(Element element : section)
+                System.out.println(element.text());
         }
     }
 

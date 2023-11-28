@@ -1,20 +1,21 @@
 package TelegramTools;
 
-import Entities.Pokemon;
-import org.graalvm.polyglot.Context;
-import org.graalvm.polyglot.Value;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
-import javax.script.Invocable;
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class Crawler {
@@ -40,20 +41,55 @@ public class Crawler {
                 Elements li = link.select("a[href]");
                 //Per ogni li prendo i gli url
                 for(Element element : li)
-                    crawl(element.absUrl("href"), urlVisited);
+                    crawlPokemon(element.absUrl("href"), new ArrayList<String>());
             }
 
         }
     }
 
-    private static void crawlPokemon(String pokemonUrl){
-        Document pokemonDoc = request(pokemonUrl, new ArrayList<>());
-        if (pokemonDoc != null) {
-            Elements section = pokemonDoc.select("section pokedex-pokemon-details");
-            for(Element element : section)
-                System.out.println(element.text());
+        private static void crawlPokemon(String pokemonUrl, ArrayList<String> strings){
+            Document pokemonDoc = request(pokemonUrl, strings);
+            //Il documento analizzato è un .json, quindi posso gestirlo come tale
+            if (pokemonDoc != null) {
+                var scripts = pokemonDoc.getElementsByTag("script");
+                for (Element script : scripts) {
+                    // Ottenere il contenuto dello script
+                    String scriptContent = script.data();
+
+                    // Estrarre il JSON dal contenuto dello script
+                    // Supponendo che il JSON sia all'interno di una variabile chiamata dexSettings
+
+                    String jsonMatch = extractJsonIncrementally(scriptContent);
+
+                    // Processa la stringa JSON
+                        processJson(jsonMatch);
+
+                    }
+                }
+            }
+    private static String extractJsonIncrementally(String scriptContent) {
+        // Utilizza un'espressione regolare per estrarre il JSON in modo incrementale
+        // Supponendo che il JSON sia all'interno di una variabile chiamata myJson
+        String regex = "dexSettings\\s*=\\s*(\\{[^;]+\\})";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(scriptContent);
+
+        StringBuilder jsonBuilder = new StringBuilder();
+
+        while (matcher.find()) {
+            System.out.println("Found JSON part: " + matcher.group(1));
+            // Aggiungi i caratteri della variabile JSON uno alla volta
+            jsonBuilder.append(matcher.group(1));
         }
+
+        return jsonBuilder.toString();
     }
+
+    private static void processJson(String json) {
+        // Puoi implementare qui la logica per elaborare la stringa JSON
+        System.out.println("JSON: " + json);
+    }
+
 
 
 

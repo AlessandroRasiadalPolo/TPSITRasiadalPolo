@@ -11,7 +11,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.regex.Matcher;
@@ -56,21 +56,39 @@ public class Crawler {
                     // Ottenere il contenuto dello script
                     String scriptContent = script.data();
 
-                    // Estrarre il JSON dal contenuto dello script
-                    // Supponendo che il JSON sia all'interno di una variabile chiamata dexSettings
-
-                    String jsonMatch = extractJsonIncrementally(scriptContent);
-
                     // Processa la stringa JSON
-                        processJson(jsonMatch);
+                    String scriptToRead = extractJsonIncrementally(scriptContent);
+                    if(!scriptToRead.isEmpty())
+                        readJsonLineByLine(scriptToRead, "src/Files/pokemon.json");
 
                     }
                 }
             }
+
+    private static void readJsonLineByLine(String scriptContent, String outputFilePath) {
+        // Usa un BufferedReader per leggere il contenuto dello script riga per riga
+        try (BufferedReader reader = new BufferedReader(new StringReader(scriptContent))) {
+            String line;
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFilePath))) {
+                while ((line = reader.readLine()) != null) {
+                    // Processa la riga JSON
+                    writer.write(line);
+                    writer.newLine(); // Aggiungi un ritorno a capo dopo ogni riga
+                }
+                //Dato che il file json risulta incompleto e devo mettere manaulmente le parentesi necessarie
+                writer.write("]}]]}");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private static String extractJsonIncrementally(String scriptContent) {
         // Utilizza un'espressione regolare per estrarre il JSON in modo incrementale
         // Supponendo che il JSON sia all'interno di una variabile chiamata myJson
-        String regex = "dexSettings\\s*=\\s*(\\{[^;]+\\})";
+        String regex = "dexSettings\\s*=\\s*(\\{[^;]+\\})\\s*";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(scriptContent);
 
@@ -87,7 +105,15 @@ public class Crawler {
 
     private static void processJson(String json) {
         // Puoi implementare qui la logica per elaborare la stringa JSON
-        System.out.println("JSON: " + json);
+
+        // Scrivi il JSON formattato in un file
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode jsonNode = objectMapper.readTree(json);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

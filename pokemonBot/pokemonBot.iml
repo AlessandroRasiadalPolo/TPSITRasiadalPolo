@@ -12,5 +12,6 @@
     <orderEntry type="library" name="graalvm.js" level="project" />
     <orderEntry type="library" name="json" level="project" />
     <orderEntry type="library" name="googlecode.json.simple" level="project" />
+    <orderEntry type="library" name="mysql.connector.java" level="project" />
   </component>
 </module>

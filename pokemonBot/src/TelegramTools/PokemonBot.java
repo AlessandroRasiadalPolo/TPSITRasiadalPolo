@@ -22,6 +22,7 @@ public class PokemonBot extends TelegramLongPollingBot {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(chatId);
         sendMessage.setText(msg);
+        sendMessage.setParseMode("html");
         try {
             execute(sendMessage);
         } catch (TelegramApiException e) {

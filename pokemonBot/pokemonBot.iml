@@ -11,5 +11,6 @@
     <orderEntry type="library" name="jsoup" level="project" />
     <orderEntry type="library" name="graalvm.js" level="project" />
     <orderEntry type="library" name="json" level="project" />
+    <orderEntry type="library" name="googlecode.json.simple" level="project" />
   </component>
 </module>

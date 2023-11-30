@@ -1,15 +1,9 @@
-package TelegramTools.Crawling;
+package TelegramTools.Crawling.Json;
 
-import Entities.Pokemon;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.json.JSONStringer;
-import org.json.simple.parser.*;
+
 import java.io.*;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,18 +27,6 @@ public class JsonAnalyzer {
         return jsonBuilder.toString();
     }
 
-    private static void processJson(String filePath) {
-        // Puoi implementare qui la logica per elaborare la stringa JSON
-
-        // Scrivi il JSON formattato in un file
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode jsonNode = objectMapper.readTree(filePath);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
     public static JsonNode prepareJson(String json){
         try {
             // Creare un oggetto ObjectMapper
@@ -60,27 +42,5 @@ public class JsonAnalyzer {
         return null;
     }
 
-    public static void visualizeJson(JsonNode jsonNode) {
-        if (jsonNode.isObject()) {
-            // Se il nodo è un oggetto, scorri attraverso i suoi campi
-            jsonNode.fields().forEachRemaining(entry -> {
-                String fieldName = entry.getKey();
-                JsonNode fieldValue = entry.getValue();
 
-                // Se il campo è "pokemon", verifica se il valore è un array
-                if ("pokemon".equals(fieldName) && fieldValue.isArray()) {
-                    for (JsonNode pokemon : fieldValue) {
-                        // Stampa ogni elemento Pokemon
-                        System.out.println(pokemon.get("name"));
-                    }
-                } else {
-                    // Se il campo non è "pokemon", continua la ricerca ricorsiva
-                    visualizeJson(fieldValue);
-                }
-            });
-        } else if (jsonNode.isArray()) {
-            // Se il nodo è un array, scorri attraverso i suoi elementi
-            jsonNode.forEach(JsonAnalyzer::visualizeJson);
-        }
-    }
 }

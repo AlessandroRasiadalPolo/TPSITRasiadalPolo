@@ -10,14 +10,13 @@ import java.util.regex.Pattern;
 public class JsonAnalyzer {
 
     public static String extractJsonIncrementally(String scriptContent) {
-        // Utilizza un'espressione regolare per estrarre il JSON in modo incrementale
-        // Supponendo che il JSON sia all'interno di una variabile chiamata myJson
+        //Tramite questo procedimento isolo SOLO la variabile dexSettings all'interno del tag script
         String regex = "dexSettings\\s*=\\s*(\\{[^;]+\\})\\s*";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(scriptContent);
 
         StringBuilder jsonBuilder = new StringBuilder();
-
+        //Comincio a creare la stringa del risultato
         while (matcher.find()) {
             System.out.println("Found JSON part: " + matcher.group(1));
             // Aggiungi i caratteri della variabile JSON uno alla volta
@@ -29,10 +28,11 @@ public class JsonAnalyzer {
 
     public static JsonNode prepareJson(String json){
         try {
-            // Creare un oggetto ObjectMapper
+
+
+            //Creo e ritorno il file json ottenuto dalla stringa appena ottenuta dal crawler
             ObjectMapper objectMapper = new ObjectMapper();
 
-            // Deserializzare la stringa JSON in un oggetto JsonNode
             JsonNode jsonNode = objectMapper.readTree(json);
 
             return jsonNode;

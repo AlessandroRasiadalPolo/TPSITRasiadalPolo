@@ -1,5 +1,6 @@
 package TelegramTools.Crawling;
 
+import TelegramTools.Crawling.TimeCounting.PeriodicCount;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
@@ -12,6 +13,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.regex.Matcher;
@@ -19,6 +21,10 @@ import java.util.regex.Pattern;
 
 
 public class Crawler {
+
+    //Prendo la data di oggi
+    private static LocalDate today;
+    private static PeriodicCount periodicCount = new PeriodicCount();
 
 
     /*
@@ -28,6 +34,16 @@ public class Crawler {
 
 
     public static void crawl(String url, ArrayList<String> urlVisited){
+
+        today = LocalDate.now();
+
+        //Devo salvarmi la prima data in cui faccio partire il programma
+
+        /*currentDate = LocalDate.now();
+        if(currentDate == currentDate.plusDays(40))
+
+         */
+
 
         Document doc = null;
         doc = request(url, urlVisited);
@@ -72,11 +88,6 @@ public class Crawler {
                     }
                 }
             }
-
-
-
-
-
 
     private static Document request(String url, ArrayList<String> urlvisited){
 

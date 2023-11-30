@@ -3,8 +3,13 @@ package TelegramTools.Crawling;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
+import org.json.JSONStringer;
+import org.json.simple.parser.*;
+
 
 import java.io.*;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -64,21 +69,10 @@ public class JsonAnalyzer {
     }
 
     public static void parseJsonFile(String filePath) {
-        try {
-            // Creazione di un oggetto ObjectMapper
-            ObjectMapper objectMapper = new ObjectMapper();
+        // file name is File.json
 
-            // Lettura dell'oggetto JsonNode dal file JSON
-            JsonNode jsonNode = objectMapper.readTree(new File(filePath));
+        Object o = new JSONParser().parse(new FileReader(File.json));
 
-            // Iterazione attraverso gli elementi dell'oggetto JsonNode
-            for (JsonNode field : jsonNode) {
-                // Stampa del nome del campo e del suo valore
-                System.out.println("Field: " + field.fieldNames().next() + ", Value: " + field);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        JSONObject j = (JSONObject) o;
     }
 }

@@ -10,5 +10,6 @@
     <orderEntry type="library" name="telegrambots-6.8.0" level="project" />
     <orderEntry type="library" name="jsoup" level="project" />
     <orderEntry type="library" name="graalvm.js" level="project" />
+    <orderEntry type="library" name="json" level="project" />
   </component>
 </module>

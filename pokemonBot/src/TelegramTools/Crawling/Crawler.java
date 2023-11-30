@@ -35,13 +35,21 @@ public class Crawler {
             //Prendo gli elementi all'interno dei tag ul
             Elements elements = doc.select("ul");
 
+            //Analizzo solo un link
+            int count = 0;
+
             //Scorro gli ul
-            for(Element link : elements){
+            for(Element link : elements) {
                 //Seleziono i li
                 Elements li = link.select("a[href]");
                 //Per ogni li prendo i gli url
-                for(Element element : li)
-                    crawlPokemon(element.absUrl("href"), new ArrayList<String>());
+                for (Element element : li) {
+                    //Devo scorrere gli elementi ma dato che il json è uguale per tutti i link posso analizzarne solo uno
+                    if(count == 0) {
+                        crawlPokemon(element.absUrl("href"), new ArrayList<String>());
+                        count++;
+                    }
+                }
             }
 
         }

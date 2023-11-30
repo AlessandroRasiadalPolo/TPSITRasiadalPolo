@@ -1,11 +1,9 @@
 package TelegramTools.Crawling;
 
+import TelegramTools.Crawling.Json.JsonAnalyzer;
+import TelegramTools.Crawling.Json.JsonObtainer;
 import TelegramTools.Crawling.TimeCounting.PeriodicCount;
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -15,9 +13,6 @@ import org.jsoup.select.Elements;
 import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 public class Crawler {
@@ -82,12 +77,20 @@ public class Crawler {
 
                     // Processa la stringa JSON
                     String scriptToRead = JsonAnalyzer.extractJsonIncrementally(scriptContent);
-                    if(!scriptToRead.isEmpty())
-                        JsonAnalyzer.readJsonLineByLine(scriptToRead, "src/Files/pokemon.json");
+                    if(!scriptToRead.isEmpty()) {
+                        //Alcuni elementi del json non vengono presi, quindi devo completarlo manualmente
+                        String finalJson = scriptToRead + "]}]]}";
+                        //Attraverso una funzione mi ricavo un puntatore json
+                        JsonNode jsonNode = JsonAnalyzer.prepareJson(finalJson);
+
+                        //Scorro ricorsivamente il json ottenuto
+                        JsonObtainer.visualizeJson(jsonNode);
+                    }
 
                     }
                 }
             }
+
 
     private static Document request(String url, ArrayList<String> urlvisited){
 

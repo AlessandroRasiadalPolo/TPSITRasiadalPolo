@@ -44,24 +44,12 @@ public class Crawler {
         doc = request(url, urlVisited);
         if(doc != null) {
             //Prendo gli elementi all'interno dei tag ul
-            Elements elements = doc.select("ul");
+            Element uls = doc.select("ul").first();
 
-            //Analizzo solo un link
-            int count = 0;
-
-            //Scorro gli ul
-            for(Element link : elements) {
-                //Seleziono i li
-                Elements li = link.select("a[href]");
-                //Per ogni li prendo i gli url
-                for (Element element : li) {
-                    //Devo scorrere gli elementi ma dato che il json è uguale per tutti i link posso analizzarne solo uno
-                    if(count == 0) {
-                        crawlPokemon(element.absUrl("href"), new ArrayList<String>());
-                        count++;
-                    }
-                }
-            }
+            //Otterrei 3 elementi diversi ma derivano tutti dalla stessa variabile json
+            Element li = uls.select("a[href]").first();
+            //Posso analizzare solo il primo link
+            crawlPokemon(li.absUrl("href"), new ArrayList<String>());
 
         }
     }

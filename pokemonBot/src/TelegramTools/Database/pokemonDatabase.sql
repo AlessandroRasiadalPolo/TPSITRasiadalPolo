@@ -3,7 +3,7 @@ USE competitivepokedex;
 
 
 CREATE TABLE IF NOT EXISTS statistiche(
-    Id  int NOT NULL PRIMARY KEY,
+    Id  int NOT NULL PRIMARY KEY AUTO_INCREMENT,
     Atk int NOT NULL,
     Spe int NOT NULL,
     Def int NOT NULL,
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS TipoImmune(
 );
 
 CREATE TABLE IF NOT EXISTS Debolezza(
-    Id int NOT NULL PRIMARY KEY,
+    Id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
     TipoDebole varchar(20) NOT NULL,
     TipoPokemon varchar(20) NOT NULL,
     FOREIGN KEY(TipoDebole) REFERENCES Tipo(Nome),
@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS Debolezza(
 );
 
 CREATE TABLE IF NOT EXISTS Forza(
-    Id int NOT NULL PRIMARY KEY,
+    Id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
     TipoForte varchar(20) NOT NULL,
     TipoPokemon varchar(20) NOT NULL,
     FOREIGN KEY(TipoForte) REFERENCES Tipo(Nome),
@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS Forza(
 );
 
 CREATE TABLE IF NOT EXISTS Immune(
-    Id int NOT NULL PRIMARY KEY,
+    Id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
     TipoImmune varchar(20) NOT NULL,
     TipoPokemon varchar(20) NOT NULL,
     FOREIGN KEY(TipoImmune) REFERENCES Tipo(Nome),
@@ -98,7 +98,7 @@ CREATE TABLE IF NOT EXISTS Pokemon(
 );
 
 CREATE TABLE IF NOT EXISTS Impara(
-    Id int NOT NULL PRIMARY KEY,
+    Id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
     NomePokemon varchar(20) NOT NULL,
     NomeMossa varchar(20) NOT NULL,
 

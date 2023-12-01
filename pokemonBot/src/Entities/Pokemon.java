@@ -4,6 +4,7 @@ import java.awt.*;
 
 public class Pokemon {
 
+    private int pokedexNumber;
     private String pokemonName;
     private String primaryType;
     private String secondaryType;
@@ -12,7 +13,8 @@ public class Pokemon {
     private Image icon;
 
 
-    public Pokemon(String pokemonName, String primaryType, String secondaryType, String weigth, Stats stats, Image icon) {
+    public Pokemon(int pokedexNumber, String pokemonName, String primaryType, String secondaryType, String weigth, Stats stats, Image icon) {
+        this.pokedexNumber = pokedexNumber;
         this.pokemonName = pokemonName;
         this.primaryType = primaryType;
         this.secondaryType = secondaryType;
@@ -22,6 +24,7 @@ public class Pokemon {
     }
 
     public Pokemon() {
+        pokedexNumber = 0;
         pokemonName = "";
         primaryType = "";
         secondaryType = "";
@@ -76,5 +79,13 @@ public class Pokemon {
 
     public void setIcon(Image icon) {
         this.icon = icon;
+    }
+
+    public int getPokedexNumber() {
+        return pokedexNumber;
+    }
+
+    public void setPokedexNumber(int pokedexNumber) {
+        this.pokedexNumber = pokedexNumber;
     }
 }

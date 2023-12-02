@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS Strumento(
 CREATE TABLE IF NOT EXISTS Abilità(
 
     Nome varchar(20) NOT NULL PRIMARY KEY,
-    Effetto varchar(50) NOT NULL
+    Effetto varchar(100) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Tipo(
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS TipoImmune(
     Nome varchar(20) NOT NULL PRIMARY KEY
 );
 
-CREATE TABLE IF NOT EXISTS Debolezza(
+CREATE TABLE IF NOT EXISTS Soffre(
     Id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
     TipoDebole varchar(20) NOT NULL,
     TipoPokemon varchar(20) NOT NULL,
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS Debolezza(
     FOREIGN KEY(TipoPokemon) REFERENCES Tipo(Nome)
 );
 
-CREATE TABLE IF NOT EXISTS Forza(
+CREATE TABLE IF NOT EXISTS Sopraffae(
     Id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
     TipoForte varchar(20) NOT NULL,
     TipoPokemon varchar(20) NOT NULL,
@@ -69,7 +69,9 @@ CREATE TABLE IF NOT EXISTS Mossa(
     Tipo varchar(20) NOT NULL,
     Effetto varchar(50),
     Potenza int,
-    Modalità ENUM ('Speciale', 'fisico') NOT NULL
+    Precisione int,
+    Priorità int,
+    Categoria ENUM ('Speciale', 'fisico') NOT NULL,
 
     FOREIGN KEY(Tipo) REFERENCES Tipo(Nome)
 

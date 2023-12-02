@@ -28,7 +28,7 @@ public class DB {
     }
 
 
-    public int registerItems(ArrayList<Item> items){
+    public static int registerItems(ArrayList<Item> items){
 
         if(items == null)
             return -1;
@@ -53,7 +53,36 @@ public class DB {
         }
     }
 
-    public int registerAbility(ArrayList<Ability> abilities){
+    public static int registerStats(ArrayList<Pokemon> pokemons){
+        if(pokemons == null)
+            return -1;
+
+        Connection conn = connect();
+
+        try{
+            Statement stmt = conn.createStatement();
+            String sql = "INSERT INTO Statistica(Atk, Spe, Def, SAtk, SDef, PS) VALUES (?,?,?,?,?,?);";
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+
+            for(Pokemon pokemon : pokemons){
+                preparedStatement.setInt(1,pokemon.getStats().getAtt());
+                preparedStatement.setInt(2, pokemon.getStats().getSpe());
+                preparedStatement.setInt(3,pokemon.getStats().getDef());
+                preparedStatement.setInt(4,pokemon.getStats().getSpa());
+                preparedStatement.setInt(5,pokemon.getStats().getSpd());
+                preparedStatement.setInt(6,pokemon.getStats().getPs());
+                preparedStatement.executeUpdate();
+            }
+
+            return 1;
+
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static int registerAbility(ArrayList<Ability> abilities){
         if(abilities == null)
             return -1;
 
@@ -88,12 +117,13 @@ public class DB {
         try {
             Statement stmt = conn.createStatement();
 
-            String sql = "INSERT INTO pokemon(NomePokemon) VALUES (?,?,?,?,?,?,?,?,?)";
+            String sql = "INSERT INTO pokemon(NomePokemon,PokedexId,Generazione) VALUES (?,?,?)";
 
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             for(Pokemon pokemon : pokemons) {
                 preparedStatement.setString(1, pokemon.getPokemonName());
                 preparedStatement.setInt(2,pokemon.getPokedexNumber());
+                preparedStatement.setString(3,pokemon.getGeneration());
 
                 preparedStatement.executeUpdate();
             }

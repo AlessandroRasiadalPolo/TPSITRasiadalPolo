@@ -1,5 +1,7 @@
 package TelegramTools.Database;
 
+import Entities.Ability;
+import Entities.Item;
 import Entities.Pokemon;
 
 import java.sql.*;
@@ -23,6 +25,56 @@ public class DB {
             throw new RuntimeException(e);
         }
         return conn;
+    }
+
+
+    public int registerItems(ArrayList<Item> items){
+
+        if(items == null)
+            return -1;
+
+        Connection conn = connect();
+
+        try{
+            Statement stmt = conn.createStatement();
+            String sql = "INSERT INTO Strumento(Nome, Effetto) VALUES (?,?);";
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+
+            for(Item item : items){
+                preparedStatement.setString(1, item.getItemName());
+                preparedStatement.setString(2, item.getItemDescription());
+                preparedStatement.executeUpdate();
+            }
+
+            return 1;
+
+        }catch(SQLException e){
+            return -2;
+        }
+    }
+
+    public int registerAbility(ArrayList<Ability> abilities){
+        if(abilities == null)
+            return -1;
+
+        Connection conn = connect();
+
+        try{
+            Statement stmt = conn.createStatement();
+            String sql = "INSERT INTO Abilità(Nome, Effetto) VALUES (?,?);";
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+
+            for(Ability ability : abilities){
+                preparedStatement.setString(1, ability.getAbilityName());
+                preparedStatement.setString(2, ability.getAbilityEffect());
+                preparedStatement.executeUpdate();
+            }
+
+            return 1;
+
+        }catch(SQLException e){
+            return -2;
+        }
     }
 
 

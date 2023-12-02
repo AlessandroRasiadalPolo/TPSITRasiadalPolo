@@ -67,6 +67,9 @@ CREATE TABLE IF NOT EXISTS Immune(
 CREATE TABLE IF NOT EXISTS Mossa(
     Nome varchar(20) NOT NULL PRIMARY KEY,
     Tipo varchar(20) NOT NULL,
+    Effetto varchar(50),
+    Potenza int,
+    Modalità ENUM ('Speciale', 'fisico') NOT NULL
 
     FOREIGN KEY(Tipo) REFERENCES Tipo(Nome)
 

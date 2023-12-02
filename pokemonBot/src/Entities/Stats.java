@@ -26,6 +26,7 @@ public class Stats {
         this.def = def;
         this.att = att;
         this.spe = spe;
+
     }
 
     public int getPs() {

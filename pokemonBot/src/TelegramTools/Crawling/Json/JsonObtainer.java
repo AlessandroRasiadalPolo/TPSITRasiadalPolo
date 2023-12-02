@@ -31,6 +31,29 @@ public class JsonObtainer {
 
                         items.add(itemTosave);
                     }
+
+                    if(DB.registerItems(items) == 1)
+                        System.out.println("Strumenti salvati correttamente!");
+                    else
+                        System.out.println("Errore durante il salvataggio degli strumenti");
+                }
+
+                else if("abilities".equals(fieldName) && fieldValue.isArray()){
+                    ArrayList<Ability> abilities = new ArrayList<Ability>();
+
+                    for(JsonNode ability : fieldValue){
+                        Ability abilityTosave = new Ability();
+                        abilityTosave.setAbilityName(ability.get("name").asText());
+                        abilityTosave.setAbilityEffect(ability.get("description").asText());
+
+                        abilities.add(abilityTosave);
+                    }
+                    if(DB.registerAbility(abilities) == 1)
+                        System.out.println("Abilità salvate correttamente!");
+                    else
+                        System.out.println("Errore salvataggio abilità");
+
+
                 }
 
                 else if("moves".equals(fieldName) && fieldValue.isArray()){
@@ -47,6 +70,8 @@ public class JsonObtainer {
                         moveTosave.setPower(move.get("power").asInt());
                         moveTosave.setEffetto(move.get("description").asText());
                         moveTosave.setPriority(move.get("priority").asInt());
+
+                        moves.add(moveTosave);
                     }
                 }
 
@@ -78,7 +103,7 @@ public class JsonObtainer {
                                 pokemonToSave.setPrimaryType(pokemon.get("types").get(1).textValue());
 
                             //Salvo la generazione
-                            pokemonToSave.setGeneration(pokemon.path("oob").path("genfamily").get(0).asText());
+                            pokemonToSave.setGeneration(pokemon.path("oob").path("genfamily").asText());
 
 
                             pokemons.add(pokemonToSave);

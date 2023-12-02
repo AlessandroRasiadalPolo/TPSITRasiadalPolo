@@ -5,6 +5,7 @@ import java.awt.*;
 public class Pokemon {
 
     private int pokedexNumber;
+    private String generation;
     private String pokemonName;
     private String primaryType;
     private String secondaryType;
@@ -13,8 +14,9 @@ public class Pokemon {
     private Image icon;
 
 
-    public Pokemon(int pokedexNumber, String pokemonName, String primaryType, String secondaryType, String weigth, Stats stats, Image icon) {
+    public Pokemon(int pokedexNumber, String generation, String pokemonName, String primaryType, String secondaryType, String weigth, Stats stats, Image icon) {
         this.pokedexNumber = pokedexNumber;
+        this.generation = generation;
         this.pokemonName = pokemonName;
         this.primaryType = primaryType;
         this.secondaryType = secondaryType;
@@ -25,6 +27,7 @@ public class Pokemon {
 
     public Pokemon() {
         pokedexNumber = 0;
+        generation = "";
         pokemonName = "";
         primaryType = "";
         secondaryType = "";
@@ -87,5 +90,13 @@ public class Pokemon {
 
     public void setPokedexNumber(int pokedexNumber) {
         this.pokedexNumber = pokedexNumber;
+    }
+
+    public String getGeneration() {
+        return generation;
+    }
+
+    public void setGeneration(String generation) {
+        this.generation = generation;
     }
 }

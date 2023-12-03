@@ -4,6 +4,7 @@ import Entities.*;
 import Entities.Stats;
 import TelegramTools.Database.DB;
 import com.fasterxml.jackson.databind.JsonNode;
+import org.json.simple.JSONArray;
 import org.jsoup.nodes.Entities;
 
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ public class JsonObtainer {
 
 
     public static void visualizeJson(JsonNode jsonNode) {
+
 
 
         if (jsonNode.isObject()) {
@@ -112,12 +114,17 @@ public class JsonObtainer {
 
                     }
 
+                    if(DB.registerStats(pokemons) == 1)
+                        System.out.println("Statistiche del pokemon salvate correttamente!");
+                    else
+                        System.out.println("Errore salvataggio statistiche!");
+
                     if(DB.RegisterPokemon(pokemons) == 1)
                         System.out.println("Pokemon salvato correttamente!");
                     else
                         System.out.println("Errore durante il salvataggio!");
                 } else {
-                    // Se il campo non è "pokemon", continuo la ricerca ricorsiva
+                    // Se il campo non è pokemon, uno strumento, abilità o altri parametri continuo la ricerca ricorsiva
                     visualizeJson(fieldValue);
                 }
             });

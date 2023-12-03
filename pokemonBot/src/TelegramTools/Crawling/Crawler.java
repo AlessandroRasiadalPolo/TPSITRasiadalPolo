@@ -64,19 +64,19 @@ public class Crawler {
                     String scriptContent = script.data();
 
                     // Processa la stringa JSON
-                    String scriptToRead = JsonAnalyzer.extractJsonIncrementally(scriptContent);
-                    if(!scriptToRead.isEmpty()) {
-                        //Alcuni elementi del json non vengono presi, quindi devo completarlo manualmente
-                        String finalJson = scriptToRead + "]}]]}";
+                    //String scriptToRead = JsonAnalyzer.extractJsonIncrementally(scriptContent);
+
                         //Attraverso una funzione mi ricavo un puntatore json
-                        JsonNode jsonNode = JsonAnalyzer.prepareJson(finalJson);
+                        if(scriptContent.contains("dexSettings")) {
+                            scriptContent = scriptContent.replace("dexSettings = ", "");
+                            JsonNode jsonNode = JsonAnalyzer.prepareJson(scriptContent);
 
-                        //Scorro ricorsivamente il json ottenuto
-                        JsonObtainer.visualizeJson(jsonNode);
+                            //Scorro ricorsivamente il json ottenuto
+                            JsonObtainer.visualizeJson(jsonNode);
+                        }
                     }
 
                     }
-                }
             }
 
 

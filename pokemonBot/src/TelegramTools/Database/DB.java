@@ -61,16 +61,17 @@ public class DB {
 
         try{
             Statement stmt = conn.createStatement();
-            String sql = "INSERT INTO Statistica(Atk, Spe, Def, SAtk, SDef, PS) VALUES (?,?,?,?,?,?);";
+            String sql = "INSERT INTO Statistica(pokemonName,Atk, Spe, Def, SAtk, SDef, PS) VALUES (?,?,?,?,?,?,?);";
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
 
             for(Pokemon pokemon : pokemons){
-                preparedStatement.setInt(1,pokemon.getStats().getAtt());
-                preparedStatement.setInt(2, pokemon.getStats().getSpe());
-                preparedStatement.setInt(3,pokemon.getStats().getDef());
-                preparedStatement.setInt(4,pokemon.getStats().getSpa());
-                preparedStatement.setInt(5,pokemon.getStats().getSpd());
-                preparedStatement.setInt(6,pokemon.getStats().getPs());
+                preparedStatement.setString(1,pokemon.getPokemonName());
+                preparedStatement.setInt(2,pokemon.getStats().getAtt());
+                preparedStatement.setInt(3, pokemon.getStats().getSpe());
+                preparedStatement.setInt(4,pokemon.getStats().getDef());
+                preparedStatement.setInt(5,pokemon.getStats().getSpa());
+                preparedStatement.setInt(6,pokemon.getStats().getSpd());
+                preparedStatement.setInt(7,pokemon.getStats().getPs());
                 preparedStatement.executeUpdate();
             }
 
@@ -106,6 +107,8 @@ public class DB {
         }
     }
 
+    public static int registerType()
+
 
     public static int RegisterPokemon(ArrayList<Pokemon> pokemons) {
 
@@ -117,13 +120,15 @@ public class DB {
         try {
             Statement stmt = conn.createStatement();
 
-            String sql = "INSERT INTO pokemon(NomePokemon,PokedexId,Generazione) VALUES (?,?,?)";
+            String sql = "INSERT INTO pokemon(NomePokemon,PokedexId,NomeTipo1, NomeTipo2, Generazione) VALUES (?,?,?,?,?)";
 
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             for(Pokemon pokemon : pokemons) {
                 preparedStatement.setString(1, pokemon.getPokemonName());
                 preparedStatement.setInt(2,pokemon.getPokedexNumber());
-                preparedStatement.setString(3,pokemon.getGeneration());
+                preparedStatement.setString(3,pokemon.getPrimaryType());
+                preparedStatement.setString(4, pokemon.getSecondaryType());
+                preparedStatement.setString(5,pokemon.getGeneration());
 
                 preparedStatement.executeUpdate();
             }

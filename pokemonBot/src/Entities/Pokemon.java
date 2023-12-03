@@ -9,7 +9,6 @@ public class Pokemon {
     private String pokemonName;
     private String primaryType;
     private String secondaryType;
-    private String weigth;
     private Stats stats;
     private Image icon;
 
@@ -20,7 +19,6 @@ public class Pokemon {
         this.pokemonName = pokemonName;
         this.primaryType = primaryType;
         this.secondaryType = secondaryType;
-        this.weigth = weigth;
         this.stats = stats;
         this.icon = icon;
     }
@@ -31,7 +29,6 @@ public class Pokemon {
         pokemonName = "";
         primaryType = "";
         secondaryType = "";
-        weigth = "";
         stats = new Stats();
         icon = null;
     }
@@ -60,13 +57,7 @@ public class Pokemon {
         this.secondaryType = secondaryType;
     }
 
-    public String getWeigth() {
-        return weigth;
-    }
 
-    public void setWeigth(String weigth) {
-        this.weigth = weigth;
-    }
 
     public Stats getStats() {
         return stats;

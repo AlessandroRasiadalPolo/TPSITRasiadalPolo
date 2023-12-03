@@ -40,6 +40,32 @@ public class JsonObtainer {
                         System.out.println("Errore durante il salvataggio degli strumenti");
                 }
 
+                else if("types".equals(fieldName) && fieldValue.isArray()){
+                    ArrayList<Type> types = new ArrayList<Type>();
+
+                    for(JsonNode type : fieldValue){
+                        Type typeToSave = new Type();
+
+                        typeToSave.setNome(type.get("name").asText());
+                        for(JsonNode node : type.path("atk_effectives")){
+                            if(node.get(1).asDouble() == 0)
+                                typeToSave.getImmunità().add(node.get(0).asText());
+                            else if(node.get(1).asDouble() == 2)
+                                typeToSave.getPuntidiForza().add(node.get(0).asText());
+                            else if(node.get(1).asDouble() == 0.5)
+                                typeToSave.getDebolezze().add(node.get(0).asText());
+                        }
+
+
+                        types.add(typeToSave);
+                    }
+                    if(DB.registerType(types) == 1)
+                        System.out.println("Tipi registrati con successo!");
+                    else
+                        System.out.println("Errore nella registrazione dei tipi");
+
+                }
+
                 else if("abilities".equals(fieldName) && fieldValue.isArray()){
                     ArrayList<Ability> abilities = new ArrayList<Ability>();
 

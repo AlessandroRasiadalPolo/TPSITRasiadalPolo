@@ -1,8 +1,6 @@
 package TelegramTools.Database;
 
-import Entities.Ability;
-import Entities.Item;
-import Entities.Pokemon;
+import Entities.*;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -107,7 +105,87 @@ public class DB {
         }
     }
 
-    public static int registerType()
+    public static int registerType(ArrayList<Type> types){
+
+        if(types == null)
+            return -1;
+
+        Connection conn = connect();
+
+        try{
+            Statement stmt = conn.createStatement();
+            String sql = "INSERT INTO Tipo(Nome) VALUES (?);";
+            String sqlWeakTypes = "INSERT INTO Soffre(TipoDebole, TipoPokemon) VALUES (?,?) ";
+            String sqlStrongTypes = "INSERT INTO Sopraffae(TipoForte, TipoPokemon) VALUES (?,?) ";
+            String sqlImmuneTypes = "INSERT INTO Immune(TipoImmune, TipoPokemon) VALUES (?,?) ";
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            PreparedStatement preparedStatementWeakTypes = conn.prepareStatement(sqlWeakTypes);
+            PreparedStatement preparedStatementStrongTypes = conn.prepareStatement(sqlStrongTypes);
+            PreparedStatement preparedStatementImmuneType = conn.prepareStatement(sqlImmuneTypes);
+
+
+
+            for(Type type : types){
+
+                preparedStatement.setString(1, type.getNome());
+                preparedStatement.executeUpdate();
+
+                for(String weakType : type.getDebolezze()){
+                    preparedStatementWeakTypes.setString(1, weakType);
+                    preparedStatementWeakTypes.setString(2,type.getNome());
+                    preparedStatementWeakTypes.executeUpdate();
+                }
+
+                for(String strongType : type.getPuntidiForza()){
+                    preparedStatementWeakTypes.setString(1, strongType);
+                    preparedStatementWeakTypes.setString(2,type.getNome());
+                    preparedStatementWeakTypes.executeUpdate();
+                }
+
+                for(String immuneType : type.getImmunità()){
+                    preparedStatementWeakTypes.setString(1, immuneType);
+                    preparedStatementWeakTypes.setString(2,type.getNome());
+                    preparedStatementWeakTypes.executeUpdate();
+                }
+            }
+
+            return 1;
+
+        }catch(SQLException e){
+            return -2;
+        }
+
+
+
+    }
+
+    /*public static int registerMoves(ArrayList<Move> moves){
+        if(moves == null)
+            return -1;
+
+        Connection conn = connect();
+
+        try{
+            Statement stmt = conn.createStatement();
+            String sql = "INSERT INTO Mossa(Nome, Tipo, Effetto, Potenza, Precisione, Priorità, Categoria) VALUES (?,?);";
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+
+            for(Move move : moves){
+                preparedStatement.setString(1, move.getAbilityName());
+                preparedStatement.setString(2, ability.getAbilityEffect());
+                preparedStatement.executeUpdate();
+            }
+
+            return 1;
+
+        }catch(SQLException e){
+            return -2;
+        }
+
+
+    }
+
+     */
 
 
     public static int RegisterPokemon(ArrayList<Pokemon> pokemons) {

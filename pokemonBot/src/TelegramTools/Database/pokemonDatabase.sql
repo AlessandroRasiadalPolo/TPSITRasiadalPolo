@@ -1,5 +1,4 @@
 
-
 CREATE DATABASE IF NOT EXISTS competitivepokedex;
 USE competitivepokedex;
 
@@ -58,12 +57,13 @@ CREATE TABLE IF NOT EXISTS Immune(
 
 CREATE TABLE IF NOT EXISTS Mossa(
     Nome varchar(100) NOT NULL PRIMARY KEY,
+    Pp int NOT NULL,
     Tipo varchar(100) NOT NULL,
     Effetto varchar(100),
     Potenza int,
     Precisione int,
     Priorità int,
-    Categoria ENUM ('Speciale', 'fisico') NOT NULL,
+    Categoria ENUM ('Special', 'Non-Damaging', 'Physical') NOT NULL,
 
     FOREIGN KEY(Tipo) REFERENCES Tipo(Nome)
 

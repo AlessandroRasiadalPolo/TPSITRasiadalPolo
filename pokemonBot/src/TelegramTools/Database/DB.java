@@ -130,6 +130,10 @@ public class DB {
                 preparedStatement.setString(1, type.getNome());
                 preparedStatement.executeUpdate();
 
+            }
+
+            for(Type type : types)
+            {
                 for(String weakType : type.getDebolezze()){
                     preparedStatementWeakTypes.setString(1, weakType);
                     preparedStatementWeakTypes.setString(2,type.getNome());
@@ -137,15 +141,15 @@ public class DB {
                 }
 
                 for(String strongType : type.getPuntidiForza()){
-                    preparedStatementWeakTypes.setString(1, strongType);
-                    preparedStatementWeakTypes.setString(2,type.getNome());
-                    preparedStatementWeakTypes.executeUpdate();
+                    preparedStatementStrongTypes.setString(1, strongType);
+                    preparedStatementStrongTypes.setString(2,type.getNome());
+                    preparedStatementStrongTypes.executeUpdate();
                 }
 
                 for(String immuneType : type.getImmunità()){
-                    preparedStatementWeakTypes.setString(1, immuneType);
-                    preparedStatementWeakTypes.setString(2,type.getNome());
-                    preparedStatementWeakTypes.executeUpdate();
+                    preparedStatementImmuneType.setString(1, immuneType);
+                    preparedStatementImmuneType.setString(2,type.getNome());
+                    preparedStatementImmuneType.executeUpdate();
                 }
             }
 
@@ -159,7 +163,7 @@ public class DB {
 
     }
 
-    /*public static int registerMoves(ArrayList<Move> moves){
+    public static int registerMoves(ArrayList<Move> moves){
         if(moves == null)
             return -1;
 
@@ -167,12 +171,18 @@ public class DB {
 
         try{
             Statement stmt = conn.createStatement();
-            String sql = "INSERT INTO Mossa(Nome, Tipo, Effetto, Potenza, Precisione, Priorità, Categoria) VALUES (?,?);";
+            String sql = "INSERT INTO Mossa(Nome, Pp, Tipo, Effetto, Potenza, Precisione, Priorità, Categoria) VALUES (?,?,?,?,?,?,?,?);";
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
 
             for(Move move : moves){
-                preparedStatement.setString(1, move.getAbilityName());
-                preparedStatement.setString(2, ability.getAbilityEffect());
+                preparedStatement.setString(1, move.getName());
+                preparedStatement.setInt(2, move.getPp());
+                preparedStatement.setString(3, move.getTipo());
+                preparedStatement.setString(4,move.getEffetto());
+                preparedStatement.setInt(5,move.getPower());
+                preparedStatement.setInt(6,move.getAccuracy());
+                preparedStatement.setInt(7,move.getPriority());
+                preparedStatement.setString(8,move.getcategory());
                 preparedStatement.executeUpdate();
             }
 
@@ -184,8 +194,6 @@ public class DB {
 
 
     }
-
-     */
 
 
     public static int RegisterPokemon(ArrayList<Pokemon> pokemons) {
@@ -197,18 +205,40 @@ public class DB {
 
         try {
             Statement stmt = conn.createStatement();
+            String sqlAbilities = "INSERT INTO Sviluppa(NomePokemon, NomeAbilità) VALUES (?,?)";
+            String sqlSingleType = "INSERT INTO pokemon(NomePokemon,PokedexId,NomeTipo1,Generazione) VALUES (?,?,?,?)";
+            String sqlDoubleType = "INSERT INTO pokemon(NomePokemon,PokedexId,NomeTipo1, NomeTipo2, Generazione) VALUES (?,?,?,?,?)";
 
-            String sql = "INSERT INTO pokemon(NomePokemon,PokedexId,NomeTipo1, NomeTipo2, Generazione) VALUES (?,?,?,?,?)";
+            PreparedStatement preparedStatementSingleType = conn.prepareStatement(sqlSingleType);
+            PreparedStatement preparedStatementDoubleType = conn.prepareStatement(sqlDoubleType);
+            PreparedStatement preparedStatementAbilities = conn.prepareStatement(sqlAbilities);
 
-            PreparedStatement preparedStatement = conn.prepareStatement(sql);
             for(Pokemon pokemon : pokemons) {
-                preparedStatement.setString(1, pokemon.getPokemonName());
-                preparedStatement.setInt(2,pokemon.getPokedexNumber());
-                preparedStatement.setString(3,pokemon.getPrimaryType());
-                preparedStatement.setString(4, pokemon.getSecondaryType());
-                preparedStatement.setString(5,pokemon.getGeneration());
+                if(!pokemon.getSecondaryType().isEmpty()){
+                    preparedStatementDoubleType.setString(1, pokemon.getPokemonName());
+                    preparedStatementDoubleType.setInt(2,pokemon.getPokedexNumber());
+                    preparedStatementDoubleType.setString(3,pokemon.getPrimaryType());
+                    preparedStatementDoubleType.setString(4, pokemon.getSecondaryType());
+                    preparedStatementDoubleType.setString(5,pokemon.getGeneration());
 
-                preparedStatement.executeUpdate();
+                    preparedStatementDoubleType.executeUpdate();
+                }
+                else{
+                    preparedStatementSingleType.setString(1, pokemon.getPokemonName());
+                    preparedStatementSingleType.setInt(2,pokemon.getPokedexNumber());
+                    preparedStatementSingleType.setString(3,pokemon.getPrimaryType());
+                    preparedStatementSingleType.setString(4,pokemon.getGeneration());
+
+                    preparedStatementSingleType.executeUpdate();
+                }
+
+            }
+            for(Pokemon pokemon : pokemons){
+                for(String ability : pokemon.getAbilities()) {
+                    preparedStatementAbilities.setString(1, pokemon.getPokemonName());
+                    preparedStatementAbilities.setString(2, ability);
+                    preparedStatementAbilities.executeUpdate();
+                }
             }
 
             stmt.close();

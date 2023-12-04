@@ -1,8 +1,11 @@
 package Entities;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Pokemon {
+
+    private ArrayList<String> abilities;
 
     private int pokedexNumber;
     private String generation;
@@ -13,7 +16,8 @@ public class Pokemon {
     private Image icon;
 
 
-    public Pokemon(int pokedexNumber, String generation, String pokemonName, String primaryType, String secondaryType, String weigth, Stats stats, Image icon) {
+    public Pokemon(ArrayList<String> abilities, int pokedexNumber, String generation, String pokemonName, String primaryType, String secondaryType, String weigth, Stats stats, Image icon) {
+        this.abilities = abilities;
         this.pokedexNumber = pokedexNumber;
         this.generation = generation;
         this.pokemonName = pokemonName;
@@ -24,6 +28,7 @@ public class Pokemon {
     }
 
     public Pokemon() {
+        abilities =  new ArrayList<String>();
         pokedexNumber = 0;
         generation = "";
         pokemonName = "";
@@ -89,5 +94,13 @@ public class Pokemon {
 
     public void setGeneration(String generation) {
         this.generation = generation;
+    }
+
+    public ArrayList<String> getAbilities() {
+        return abilities;
+    }
+
+    public void setAbilities(ArrayList<String> abilities) {
+        this.abilities = abilities;
     }
 }

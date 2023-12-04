@@ -2,6 +2,8 @@ package Entities;
 
 public class Move {
 
+    private String name;
+
     private int power;
     private String effetto;
     private String category; //O speciale o fisica
@@ -12,6 +14,7 @@ public class Move {
 
     public Move()
     {
+        name = "";
         pp = 0;
         priority = 0;
         accuracy = 0;
@@ -21,7 +24,8 @@ public class Move {
         category = "";
     }
 
-    public Move(int pp, int priority, int accuracy, String type, int power, String effetto, String category) {
+    public Move(String name, int pp, int priority, int accuracy, String type, int power, String effetto, String category) {
+        this.name = name;
         this.power = power;
         this.effetto = effetto;
         this.category = category;
@@ -93,5 +97,13 @@ public class Move {
 
     public void setPp(int pp) {
         this.pp = pp;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

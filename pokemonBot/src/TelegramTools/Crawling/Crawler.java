@@ -79,6 +79,20 @@ public class Crawler {
                     }
             }
 
+            public static int crawlPokemonMoves(String url, ArrayList<String> urls){
+                Document doc = request(url, urls);
+
+                if(doc != null){
+                    Elements divs = doc.select("div.MoveRow-name");
+
+                    for(Element div : divs)
+                        System.out.println(doc.select("span").text());
+
+                    return 1;
+                }
+                return -1;
+            }
+
 
     private static Document request(String url, ArrayList<String> urlvisited){
 

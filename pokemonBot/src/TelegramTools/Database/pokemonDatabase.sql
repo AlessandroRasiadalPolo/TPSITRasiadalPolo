@@ -3,6 +3,7 @@ CREATE DATABASE IF NOT EXISTS competitivepokedex;
 USE competitivepokedex;
 
 
+
 CREATE TABLE IF NOT EXISTS statistica(
     id INT AUTO_INCREMENT PRIMARY KEY,
     pokemonName varchar(100) NOT NULL,
@@ -75,6 +76,7 @@ CREATE TABLE IF NOT EXISTS Pokemon(
     NomeTipo1 varchar(100) NOT NULL,
     NomeTipo2 varchar(100),
     Generazione varchar(100) NOT NULL,
+    Icon varchar(200),
 
 
     FOREIGN KEY(NomeTipo1) REFERENCES Tipo(Nome),

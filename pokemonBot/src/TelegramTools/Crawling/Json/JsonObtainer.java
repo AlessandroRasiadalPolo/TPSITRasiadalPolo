@@ -123,6 +123,7 @@ public class JsonObtainer {
                     for (JsonNode pokemon : fieldValue) {
                         //Tolgo i pokemon inventati
                         if (pokemon.path("oob").path("dex_number").asInt() > 0) {
+                            final String url = "https://www.smogon.com/dex/media/sprites/xy/";
                             Pokemon pokemonToSave = new Pokemon();
                             //salvo il numero del pokedex
                             pokemonToSave.setPokedexNumber(pokemon.path("oob").path("dex_number").asInt());
@@ -147,6 +148,7 @@ public class JsonObtainer {
 
                             //Salvo la generazione
                             pokemonToSave.setGeneration(pokemon.path("oob").path("genfamily").get(0).asText());
+                            pokemonToSave.setIcon(url + pokemonToSave.getPokemonName().toLowerCase() + ".gif");
                             pokemons.add(pokemonToSave);
                         }
 

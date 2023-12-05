@@ -13,10 +13,10 @@ public class Pokemon {
     private String primaryType;
     private String secondaryType;
     private Stats stats;
-    private Image icon;
+    private String icon;
 
 
-    public Pokemon(ArrayList<String> abilities, int pokedexNumber, String generation, String pokemonName, String primaryType, String secondaryType, String weigth, Stats stats, Image icon) {
+    public Pokemon(ArrayList<String> abilities, int pokedexNumber, String generation, String pokemonName, String primaryType, String secondaryType, String weigth, Stats stats, String icon) {
         this.abilities = abilities;
         this.pokedexNumber = pokedexNumber;
         this.generation = generation;
@@ -72,11 +72,11 @@ public class Pokemon {
         this.stats = stats;
     }
 
-    public Image getIcon() {
+    public String getIcon() {
         return icon;
     }
 
-    public void setIcon(Image icon) {
+    public void setIcon(String icon) {
         this.icon = icon;
     }
 

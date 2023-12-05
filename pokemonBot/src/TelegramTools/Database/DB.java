@@ -45,6 +45,9 @@ public class DB {
                 preparedStatement.executeUpdate();
             }
 
+            stmt.close();
+            conn.close();
+
             return 1;
 
         } catch (SQLException e) {
@@ -74,6 +77,9 @@ public class DB {
                 preparedStatement.executeUpdate();
             }
 
+            stmt.close();
+            conn.close();
+
             return 1;
 
 
@@ -98,6 +104,9 @@ public class DB {
                 preparedStatement.setString(2, ability.getAbilityEffect());
                 preparedStatement.executeUpdate();
             }
+
+            stmt.close();
+            conn.close();
 
             return 1;
 
@@ -152,6 +161,9 @@ public class DB {
                 }
             }
 
+            stmt.close();
+            conn.close();
+
             return 1;
 
         } catch (SQLException e) {
@@ -184,6 +196,9 @@ public class DB {
                 preparedStatement.executeUpdate();
             }
 
+            stmt.close();
+            conn.close();
+
             return 1;
 
         } catch (SQLException e) {
@@ -204,8 +219,8 @@ public class DB {
         try {
             Statement stmt = conn.createStatement();
             String sqlAbilities = "INSERT INTO Sviluppa(NomePokemon, NomeAbilità) VALUES (?,?)";
-            String sqlSingleType = "INSERT INTO pokemon(NomePokemon,PokedexId,NomeTipo1,Generazione) VALUES (?,?,?,?)";
-            String sqlDoubleType = "INSERT INTO pokemon(NomePokemon,PokedexId,NomeTipo1, NomeTipo2, Generazione) VALUES (?,?,?,?,?)";
+            String sqlSingleType = "INSERT INTO pokemon(NomePokemon,PokedexId,NomeTipo1,Generazione, Icon) VALUES (?,?,?,?,?)";
+            String sqlDoubleType = "INSERT INTO pokemon(NomePokemon,PokedexId,NomeTipo1, NomeTipo2, Generazione, Icon) VALUES (?,?,?,?,?,?)";
 
             PreparedStatement preparedStatementSingleType = conn.prepareStatement(sqlSingleType);
             PreparedStatement preparedStatementDoubleType = conn.prepareStatement(sqlDoubleType);
@@ -218,6 +233,7 @@ public class DB {
                     preparedStatementDoubleType.setString(3, pokemon.getPrimaryType());
                     preparedStatementDoubleType.setString(4, pokemon.getSecondaryType());
                     preparedStatementDoubleType.setString(5, pokemon.getGeneration());
+                    preparedStatementDoubleType.setString(6, pokemon.getIcon());
 
                     preparedStatementDoubleType.executeUpdate();
                 } else {
@@ -225,6 +241,7 @@ public class DB {
                     preparedStatementSingleType.setInt(2, pokemon.getPokedexNumber());
                     preparedStatementSingleType.setString(3, pokemon.getPrimaryType());
                     preparedStatementSingleType.setString(4, pokemon.getGeneration());
+                    preparedStatementSingleType.setString(5, pokemon.getIcon());
 
                     preparedStatementSingleType.executeUpdate();
                 }
@@ -242,6 +259,35 @@ public class DB {
             conn.close();
 
             return 1;
+        } catch (SQLException e) {
+            return -2;
+        }
+
+    }
+
+    public static int saveMoves(ArrayList<String> moves, String pokemon){
+
+        if(moves == null || pokemon.isEmpty())
+            return -1;
+
+        Connection conn = connect();
+
+        try{
+            Statement stmt = conn.createStatement();
+            String sql = "INSERT INTO Impara(NomePokemon, NomeMossa) VALUES (?,?);";
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+
+            for(String move : moves){
+                preparedStatement.setString(1,pokemon);
+                preparedStatement.setString(2,move);
+                preparedStatement.executeUpdate();
+            }
+
+            stmt.close();
+            conn.close();
+
+            return 1;
+
         } catch (SQLException e) {
             return -2;
         }
@@ -266,6 +312,9 @@ public class DB {
             while (resultSet.next()) {
                 pokemons.add(resultSet.getString("NomePokemon"));
             }
+
+            stmt.close();
+            conn.close();
 
             return pokemons;
 

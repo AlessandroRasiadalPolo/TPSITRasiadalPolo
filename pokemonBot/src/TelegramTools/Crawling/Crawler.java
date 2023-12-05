@@ -91,20 +91,23 @@ public class Crawler {
 
                     while(!pokemons.isEmpty()){
                         String urlToVisit = url + pokemons.getFirst();
-                        crawlPokemonMoves(urlToVisit, urls);
+                        crawlPokemonMoves(urlToVisit, urls, pokemons.getFirst());
                         pokemons.removeFirst();
                     }
+                    System.out.println("Mosse per ogni pokemon salvate!");
 
                     return 1;
                 }
                 return -1;
             }
 
-    private static int crawlPokemonMoves(String url, ArrayList<String> urls){
+    private static int crawlPokemonMoves(String url, ArrayList<String> urls, String pokemonName){
 
         Document doc = request(url, urls);
 
         if(doc != null){
+
+            ArrayList<String> moves = new ArrayList<String>();
 
             LinkedList<String> pokemons = DB.savePokemonMoves();
 
@@ -114,8 +117,9 @@ public class Crawler {
 
             Elements tds = tr.select("tr").select("td").select("a.ent-name");
             for(Element move : tds){
-                System.out.println(move.text());
+                moves.add(move.text());
             }
+            DB.saveMoves(moves, pokemonName);
 
             return 1;
         }
@@ -130,8 +134,6 @@ public class Crawler {
             Document doc = conn.get();
 
             if(conn.response().statusCode() == 200){
-                System.out.println("link: " + url);
-                System.out.println(doc.title());
                 urlvisited.add(url);
 
                 return doc;

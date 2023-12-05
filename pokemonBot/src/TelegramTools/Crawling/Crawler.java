@@ -83,10 +83,16 @@ public class Crawler {
                 Document doc = request(url, urls);
 
                 if(doc != null){
-                    Elements divs = doc.select("div.MoveRow-name");
+                    Elements table = doc.select("table.roundy");
 
-                    for(Element div : divs)
-                        System.out.println(doc.select("span").text());
+                    Elements tr = table.select("tr");
+
+                        Elements spans = tr.select("tr").select("td").select("span");
+                        for(Element move : spans){
+                            System.out.println(move.text());
+                        }
+
+
 
                     return 1;
                 }

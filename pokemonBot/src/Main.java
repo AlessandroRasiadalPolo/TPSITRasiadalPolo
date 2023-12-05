@@ -14,7 +14,7 @@ public class Main {
             e.printStackTrace();
         }
         Crawler.crawl("https://www.smogon.com/dex/", new ArrayList<String>());
-        Crawler.crawlPokemonMoves("https://www.smogon.com/dex/sv/pokemon/abomasnow/", new ArrayList<String>());
+        Crawler.crawlPokemonMoves("https://bulbapedia.bulbagarden.net/wiki/Bulbasaur_(Pok%C3%A9mon)#Learnset", new ArrayList<String>());
     }
 
     }

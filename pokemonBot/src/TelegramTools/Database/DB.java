@@ -4,6 +4,7 @@ import Entities.*;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class DB {
 
@@ -26,19 +27,19 @@ public class DB {
     }
 
 
-    public static int registerItems(ArrayList<Item> items){
+    public static int registerItems(ArrayList<Item> items) {
 
-        if(items == null)
+        if (items == null)
             return -1;
 
         Connection conn = connect();
 
-        try{
+        try {
             Statement stmt = conn.createStatement();
             String sql = "INSERT INTO Strumento(Nome, Effetto) VALUES (?,?);";
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
 
-            for(Item item : items){
+            for (Item item : items) {
                 preparedStatement.setString(1, item.getItemName());
                 preparedStatement.setString(2, item.getItemDescription());
                 preparedStatement.executeUpdate();
@@ -46,30 +47,30 @@ public class DB {
 
             return 1;
 
-        }catch(SQLException e){
+        } catch (SQLException e) {
             return -2;
         }
     }
 
-    public static int registerStats(ArrayList<Pokemon> pokemons){
-        if(pokemons == null)
+    public static int registerStats(ArrayList<Pokemon> pokemons) {
+        if (pokemons == null)
             return -1;
 
         Connection conn = connect();
 
-        try{
+        try {
             Statement stmt = conn.createStatement();
             String sql = "INSERT INTO Statistica(pokemonName,Atk, Spe, Def, SAtk, SDef, PS) VALUES (?,?,?,?,?,?,?);";
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
 
-            for(Pokemon pokemon : pokemons){
-                preparedStatement.setString(1,pokemon.getPokemonName());
-                preparedStatement.setInt(2,pokemon.getStats().getAtt());
+            for (Pokemon pokemon : pokemons) {
+                preparedStatement.setString(1, pokemon.getPokemonName());
+                preparedStatement.setInt(2, pokemon.getStats().getAtt());
                 preparedStatement.setInt(3, pokemon.getStats().getSpe());
-                preparedStatement.setInt(4,pokemon.getStats().getDef());
-                preparedStatement.setInt(5,pokemon.getStats().getSpa());
-                preparedStatement.setInt(6,pokemon.getStats().getSpd());
-                preparedStatement.setInt(7,pokemon.getStats().getPs());
+                preparedStatement.setInt(4, pokemon.getStats().getDef());
+                preparedStatement.setInt(5, pokemon.getStats().getSpa());
+                preparedStatement.setInt(6, pokemon.getStats().getSpd());
+                preparedStatement.setInt(7, pokemon.getStats().getPs());
                 preparedStatement.executeUpdate();
             }
 
@@ -81,18 +82,18 @@ public class DB {
         }
     }
 
-    public static int registerAbility(ArrayList<Ability> abilities){
-        if(abilities == null)
+    public static int registerAbility(ArrayList<Ability> abilities) {
+        if (abilities == null)
             return -1;
 
         Connection conn = connect();
 
-        try{
+        try {
             Statement stmt = conn.createStatement();
             String sql = "INSERT INTO Abilità(Nome, Effetto) VALUES (?,?);";
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
 
-            for(Ability ability : abilities){
+            for (Ability ability : abilities) {
                 preparedStatement.setString(1, ability.getAbilityName());
                 preparedStatement.setString(2, ability.getAbilityEffect());
                 preparedStatement.executeUpdate();
@@ -100,19 +101,19 @@ public class DB {
 
             return 1;
 
-        }catch(SQLException e){
+        } catch (SQLException e) {
             return -2;
         }
     }
 
-    public static int registerType(ArrayList<Type> types){
+    public static int registerType(ArrayList<Type> types) {
 
-        if(types == null)
+        if (types == null)
             return -1;
 
         Connection conn = connect();
 
-        try{
+        try {
             Statement stmt = conn.createStatement();
             String sql = "INSERT INTO Tipo(Nome) VALUES (?);";
             String sqlWeakTypes = "INSERT INTO Soffre(TipoDebole, TipoPokemon) VALUES (?,?) ";
@@ -124,71 +125,68 @@ public class DB {
             PreparedStatement preparedStatementImmuneType = conn.prepareStatement(sqlImmuneTypes);
 
 
-
-            for(Type type : types){
+            for (Type type : types) {
 
                 preparedStatement.setString(1, type.getNome());
                 preparedStatement.executeUpdate();
 
             }
 
-            for(Type type : types)
-            {
-                for(String weakType : type.getDebolezze()){
+            for (Type type : types) {
+                for (String weakType : type.getDebolezze()) {
                     preparedStatementWeakTypes.setString(1, weakType);
-                    preparedStatementWeakTypes.setString(2,type.getNome());
+                    preparedStatementWeakTypes.setString(2, type.getNome());
                     preparedStatementWeakTypes.executeUpdate();
                 }
 
-                for(String strongType : type.getPuntidiForza()){
+                for (String strongType : type.getPuntidiForza()) {
                     preparedStatementStrongTypes.setString(1, strongType);
-                    preparedStatementStrongTypes.setString(2,type.getNome());
+                    preparedStatementStrongTypes.setString(2, type.getNome());
                     preparedStatementStrongTypes.executeUpdate();
                 }
 
-                for(String immuneType : type.getImmunità()){
+                for (String immuneType : type.getImmunità()) {
                     preparedStatementImmuneType.setString(1, immuneType);
-                    preparedStatementImmuneType.setString(2,type.getNome());
+                    preparedStatementImmuneType.setString(2, type.getNome());
                     preparedStatementImmuneType.executeUpdate();
                 }
             }
 
             return 1;
 
-        }catch(SQLException e){
+        } catch (SQLException e) {
             return -2;
         }
 
 
-
     }
 
-    public static int registerMoves(ArrayList<Move> moves){
-        if(moves == null)
+    public static int registerMoves(ArrayList<Move> moves) {
+        if (moves == null)
             return -1;
 
         Connection conn = connect();
 
-        try{
+        try {
             Statement stmt = conn.createStatement();
             String sql = "INSERT INTO Mossa(Nome, Pp, Tipo, Effetto, Potenza, Precisione, Priorità, Categoria) VALUES (?,?,?,?,?,?,?,?);";
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
 
-            for(Move move : moves){
+            for (Move move : moves) {
                 preparedStatement.setString(1, move.getName());
                 preparedStatement.setInt(2, move.getPp());
                 preparedStatement.setString(3, move.getTipo());
-                preparedStatement.setString(4,move.getEffetto());
-                preparedStatement.setInt(5,move.getPower());
-                preparedStatement.setInt(6,move.getAccuracy());
-                preparedStatement.setInt(7,move.getPriority());
-                preparedStatement.setString(8,move.getcategory());
+                preparedStatement.setString(4, move.getEffetto());
+                preparedStatement.setInt(5, move.getPower());
+                preparedStatement.setInt(6, move.getAccuracy());
+                preparedStatement.setInt(7, move.getPriority());
+                preparedStatement.setString(8, move.getcategory());
                 preparedStatement.executeUpdate();
             }
 
             return 1;
 
-        }catch(SQLException e){
+        } catch (SQLException e) {
             return -2;
         }
 
@@ -213,28 +211,27 @@ public class DB {
             PreparedStatement preparedStatementDoubleType = conn.prepareStatement(sqlDoubleType);
             PreparedStatement preparedStatementAbilities = conn.prepareStatement(sqlAbilities);
 
-            for(Pokemon pokemon : pokemons) {
-                if(!pokemon.getSecondaryType().isEmpty()){
+            for (Pokemon pokemon : pokemons) {
+                if (!pokemon.getSecondaryType().isEmpty()) {
                     preparedStatementDoubleType.setString(1, pokemon.getPokemonName());
-                    preparedStatementDoubleType.setInt(2,pokemon.getPokedexNumber());
-                    preparedStatementDoubleType.setString(3,pokemon.getPrimaryType());
+                    preparedStatementDoubleType.setInt(2, pokemon.getPokedexNumber());
+                    preparedStatementDoubleType.setString(3, pokemon.getPrimaryType());
                     preparedStatementDoubleType.setString(4, pokemon.getSecondaryType());
-                    preparedStatementDoubleType.setString(5,pokemon.getGeneration());
+                    preparedStatementDoubleType.setString(5, pokemon.getGeneration());
 
                     preparedStatementDoubleType.executeUpdate();
-                }
-                else{
+                } else {
                     preparedStatementSingleType.setString(1, pokemon.getPokemonName());
-                    preparedStatementSingleType.setInt(2,pokemon.getPokedexNumber());
-                    preparedStatementSingleType.setString(3,pokemon.getPrimaryType());
-                    preparedStatementSingleType.setString(4,pokemon.getGeneration());
+                    preparedStatementSingleType.setInt(2, pokemon.getPokedexNumber());
+                    preparedStatementSingleType.setString(3, pokemon.getPrimaryType());
+                    preparedStatementSingleType.setString(4, pokemon.getGeneration());
 
                     preparedStatementSingleType.executeUpdate();
                 }
 
             }
-            for(Pokemon pokemon : pokemons){
-                for(String ability : pokemon.getAbilities()) {
+            for (Pokemon pokemon : pokemons) {
+                for (String ability : pokemon.getAbilities()) {
                     preparedStatementAbilities.setString(1, pokemon.getPokemonName());
                     preparedStatementAbilities.setString(2, ability);
                     preparedStatementAbilities.executeUpdate();
@@ -249,5 +246,31 @@ public class DB {
             return -2;
         }
 
+    }
+
+    public static LinkedList<String> savePokemonMoves() {
+
+        Connection conn = connect();
+
+
+        try {
+            Statement stmt = conn.createStatement();
+
+            LinkedList<String> pokemons = new LinkedList<String>();
+            String sql = "SELECT NomePokemon FROM Pokemon";
+
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                pokemons.add(resultSet.getString("NomePokemon"));
+            }
+
+            return pokemons;
+
+        } catch (SQLException e) {
+            return null;
+        }
     }
 }

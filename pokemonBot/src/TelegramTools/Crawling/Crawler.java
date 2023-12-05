@@ -3,6 +3,7 @@ package TelegramTools.Crawling;
 import TelegramTools.Crawling.Json.JsonAnalyzer;
 import TelegramTools.Crawling.Json.JsonObtainer;
 import TelegramTools.Crawling.TimeCounting.PeriodicCount;
+import TelegramTools.Database.DB;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -13,6 +14,7 @@ import org.jsoup.select.Elements;
 import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 
 public class Crawler {
@@ -79,25 +81,46 @@ public class Crawler {
                     }
             }
 
-            public static int crawlPokemonMoves(String url, ArrayList<String> urls){
+            public static int crawlPokemonPage(String url, ArrayList<String> urls){
+
                 Document doc = request(url, urls);
 
                 if(doc != null){
-                    Elements table = doc.select("table.roundy");
 
-                    Elements tr = table.select("tr");
+                    LinkedList<String> pokemons = DB.savePokemonMoves();
 
-                        Elements spans = tr.select("tr").select("td").select("span");
-                        for(Element move : spans){
-                            System.out.println(move.text());
-                        }
-
-
+                    while(!pokemons.isEmpty()){
+                        String urlToVisit = url + pokemons.getFirst();
+                        crawlPokemonMoves(urlToVisit, urls);
+                        pokemons.removeFirst();
+                    }
 
                     return 1;
                 }
                 return -1;
             }
+
+    private static int crawlPokemonMoves(String url, ArrayList<String> urls){
+
+        Document doc = request(url, urls);
+
+        if(doc != null){
+
+            LinkedList<String> pokemons = DB.savePokemonMoves();
+
+            Elements table = doc.select("table");
+
+            Elements tr = table.select("tr");
+
+            Elements tds = tr.select("tr").select("td").select("a.ent-name");
+            for(Element move : tds){
+                System.out.println(move.text());
+            }
+
+            return 1;
+        }
+        return -1;
+    }
 
 
     private static Document request(String url, ArrayList<String> urlvisited){

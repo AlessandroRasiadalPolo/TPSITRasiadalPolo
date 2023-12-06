@@ -322,4 +322,38 @@ public class DB {
             return null;
         }
     }
+
+    public static int creaSquadra(Team team, String idUtente){
+
+        if(idUtente.isEmpty() || team == null)
+            return -2;
+
+        Connection con = connect();
+
+        try{
+            Statement stmt = con.createStatement();
+            String sqlIntertTeam = "INSERT INTO Squadra(NomeSquadra, Pokemon1, Pokemon2, Pokemon3, Pokemon4) VALUES (?,?,?,?,?)";
+            String sqlInsert = "INSERT INTO Forma(IdUtente, NomeSquadra) VALUES (?,?)";
+
+            PreparedStatement preparedStatementInsertTeam = con.prepareStatement(sqlIntertTeam);
+            PreparedStatement preparedStatementInsert = con.prepareStatement(sqlInsert);
+
+            preparedStatementInsertTeam.setString(1,team.getTeamName());
+            preparedStatementInsert.setString(2,team.getPokemonName1());
+            preparedStatementInsert.setString(3,team.getPokemonName2());
+            preparedStatementInsert.setString(4,team.getPokemonName3());
+            preparedStatementInsert.setString(5,team.getPokemonName4());
+
+            preparedStatementInsertTeam.executeUpdate();
+
+            preparedStatementInsert.setString(1, idUtente);
+            preparedStatementInsert.setString(2,team.getTeamName());
+            preparedStatementInsert.executeUpdate();
+
+            return 1;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

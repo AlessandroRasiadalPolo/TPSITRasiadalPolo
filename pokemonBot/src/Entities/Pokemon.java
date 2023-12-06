@@ -5,15 +5,15 @@ import java.util.ArrayList;
 
 public class Pokemon {
 
-    private ArrayList<String> abilities;
+    protected ArrayList<String> abilities;
 
-    private int pokedexNumber;
-    private String generation;
-    private String pokemonName;
-    private String primaryType;
-    private String secondaryType;
-    private Stats stats;
-    private String icon;
+    protected int pokedexNumber;
+    protected String generation;
+    protected String pokemonName;
+    protected String primaryType;
+    protected String secondaryType;
+    protected Stats stats;
+    protected String icon;
 
 
     public Pokemon(ArrayList<String> abilities, int pokedexNumber, String generation, String pokemonName, String primaryType, String secondaryType, String weigth, Stats stats, String icon) {

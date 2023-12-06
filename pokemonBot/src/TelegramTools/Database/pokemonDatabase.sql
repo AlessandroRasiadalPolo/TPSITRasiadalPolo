@@ -101,4 +101,48 @@ CREATE TABLE IF NOT EXISTS Impara(
     FOREIGN KEY(NomeMossa) REFERENCES Mossa(Nome)
 );
 
+CREATE TABLE IF NOT EXISTS Utente(
+    Id varchar(100) NOT NULL PRIMARY KEY
+);
+
+CREATE TABLE IF NOT EXISTS PokemonSquadra(
+    PokemonName varchar(100) NOT NULL,
+    Strumento varchar(100) NOT NULL,
+    Abilità varchar(100) NOT NULL,
+    Mossa1 varchar(100) NOT NULL,
+    Mossa2 varchar(100) NOT NULL,
+    Mossa3 varchar(100) NOT NULL,
+    Mossa4 varchar(100) NOT NULL,
+
+    FOREIGN KEY(PokemonName) REFERENCES Pokemon(NomePokemon),
+    FOREIGN KEY (Strumento) REFERENCES Strumento(Nome),
+    FOREIGN KEY(Abilità) REFERENCES Abilità(Nome),
+    FOREIGN KEY(Mossa1) REFERENCES Mossa(Nome),
+    FOREIGN KEY(Mossa2) REFERENCES Mossa(Nome),
+    FOREIGN KEY(Mossa3) REFERENCES Mossa(Nome),
+    FOREIGN KEY(Mossa4) REFERENCES Mossa(Nome)
+);
+
+CREATE TABLE IF NOT EXISTS Squadra(
+    NomeSquadra varchar(100) NOT NULL PRIMARY KEY,
+    Pokemon1 varchar(100),
+    Pokemon2 varchar(100),
+    Pokemon3 varchar(100),
+    Pokemon4 varchar(100),
+    FOREIGN KEY(Pokemon1) REFERENCES PokemonSquadra(PokemonName),
+    FOREIGN KEY(Pokemon2) REFERENCES PokemonSquadra(PokemonName),
+    FOREIGN KEY(Pokemon3) REFERENCES PokemonSquadra(PokemonName),
+    FOREIGN KEY(Pokemon4) REFERENCES PokemonSquadra(PokemonName)
+);
+
+CREATE TABLE IF NOT EXISTS Forma(
+    Id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    IdUtente varchar(100) NOT NULL,
+    NomeSquadra varchar(100) NOT NULL,
+
+    
+    FOREIGN KEY(IdUtente) REFERENCES Utente(Id),
+    FOREIGN KEY(NomeSquadra) REFERENCES Squadra(NomeSquadra)
+);
+
 

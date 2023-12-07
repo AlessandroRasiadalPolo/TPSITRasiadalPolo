@@ -156,15 +156,16 @@ public class JsonObtainer {
 
                     }
 
+                    if (DB.RegisterPokemon(pokemons) == 1)
+                        System.out.println("Pokemon salvato correttamente!");
+                    else
+                        System.out.println("Errore durante il salvataggio!");
+
                     if (DB.registerStats(pokemons) == 1)
                         System.out.println("Statistiche del pokemon salvate correttamente!");
                     else
                         System.out.println("Errore salvataggio statistiche!");
 
-                    if (DB.RegisterPokemon(pokemons) == 1)
-                        System.out.println("Pokemon salvato correttamente!");
-                    else
-                        System.out.println("Errore durante il salvataggio!");
                 } else
                     visualizeJson(fieldValue);
             });

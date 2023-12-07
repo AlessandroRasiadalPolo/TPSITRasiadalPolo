@@ -323,37 +323,105 @@ public class DB {
         }
     }
 
-    public static int creaSquadra(Team team, String idUtente){
+    public static int creaSquadra(ArrayList<PokemonTeam> pokemons, String teamName, String idUtente){
 
-        if(idUtente.isEmpty() || team == null)
+        if(idUtente.isEmpty() || teamName.isEmpty() || pokemons == null)
             return -2;
 
         Connection con = connect();
 
         try{
             Statement stmt = con.createStatement();
-            String sqlIntertTeam = "INSERT INTO Squadra(NomeSquadra, Pokemon1, Pokemon2, Pokemon3, Pokemon4) VALUES (?,?,?,?,?)";
+            String sqlinsertPokemon = "INSERT INTO PokemonSquadra(TeamName,PokemonName, Strumento, Abilità, Mossa1, Mossa3, Mossa3, Mossa4) VALUES (?,?,?,?,?,?,?,?)";
+            String sqlInsertUser = "INSERT INTO Utente(Id) VALUES (?)";
+            String sqlInsertTeam = "INSERT INTO Squadra(NomeSquadra) VALUES (?)";
             String sqlInsert = "INSERT INTO Forma(IdUtente, NomeSquadra) VALUES (?,?)";
 
-            PreparedStatement preparedStatementInsertTeam = con.prepareStatement(sqlIntertTeam);
-            PreparedStatement preparedStatementInsert = con.prepareStatement(sqlInsert);
+            //Salvo l'utente
+            PreparedStatement preparedStatementInserUser = con.prepareStatement(sqlInsertUser);
+            preparedStatementInserUser.setString(1, idUtente);
+            preparedStatementInserUser.executeUpdate();
 
-            preparedStatementInsertTeam.setString(1,team.getTeamName());
-            preparedStatementInsert.setString(2,team.getPokemonName1());
-            preparedStatementInsert.setString(3,team.getPokemonName2());
-            preparedStatementInsert.setString(4,team.getPokemonName3());
-            preparedStatementInsert.setString(5,team.getPokemonName4());
 
+            //Salvo il nome del team
+            PreparedStatement preparedStatementInsertTeam = con.prepareStatement(sqlInsertTeam);
+            preparedStatementInsertTeam.setString(1, teamName);
             preparedStatementInsertTeam.executeUpdate();
 
+            //Salvo quale utente ha creato la squadra
+            PreparedStatement preparedStatementInsert = con.prepareStatement(sqlInsert);
             preparedStatementInsert.setString(1, idUtente);
-            preparedStatementInsert.setString(2,team.getTeamName());
+            preparedStatementInsert.setString(2, teamName);
             preparedStatementInsert.executeUpdate();
+
+            //Salvo i pokemon che formano la squadra, gli strumenti, le abilità e le mosse
+            for(PokemonTeam pokemon : pokemons){
+                PreparedStatement preparedStatementInsertPokemon = con.prepareStatement(sqlinsertPokemon);
+                preparedStatementInsertPokemon.setString(1,teamName);
+                preparedStatementInsertPokemon.setString(2,pokemon.getPokemonName());
+                preparedStatementInsertPokemon.setString(3,pokemon.getStrumento());
+                preparedStatementInsertPokemon.setString(4,pokemon.getAbiltià());
+                preparedStatementInsertPokemon.setString(5, pokemon.getMossa1());
+                preparedStatementInsertPokemon.setString(6,pokemon.getMossa2());
+                preparedStatementInsertPokemon.setString(7, pokemon.getMossa3());
+                preparedStatementInsertPokemon.setString(8, pokemon.getMossa4());
+
+                preparedStatementInsertPokemon.executeUpdate();
+
+            }
+
+
+            stmt.close();
+            con.close();
 
             return 1;
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static Pokemon ottieniPokemon(String nomePokemon){
+        if(nomePokemon.isEmpty())
+            return null;
+
+        Connection con = connect();
+
+        try{
+            Statement stmt = con.createStatement();
+            String sql = "SELECT P.NomePokemon AS NP, P.PokedexId, p.NomeTipo1, P.NomeTipo2, P.Generazione, S.*, A.*, ST.*  FROM Pokemon AS P INNER JOIN Sviluppa AS S ON (P.NomePokemon = S.NomePokemon) INNER JOIN Abilità AS A ON (A.Nome = S.NomeAbilità) INNER JOIN Statistica AS ST ON(P.NomePokemon = ST.PokemonName) WHERE P.NomePokemon = ?;";
+
+            PreparedStatement preparedStatementInsert = con.prepareStatement(sql);
+            preparedStatementInsert.setString(1, nomePokemon);
+
+            ResultSet resultSet = preparedStatementInsert.executeQuery();
+
+
+                Pokemon pokemon = new Pokemon();
+                //Salvo le prime informazioni
+                pokemon.setPokemonName(resultSet.getString("NP"));
+                pokemon.setIcon(resultSet.getString("Icon"));
+                pokemon.setStats(new Stats(resultSet.getInt("PS"),
+                    resultSet.getInt("SAtk"),
+                    resultSet.getInt("SDef"),
+                    resultSet.getInt("Def"),
+                    resultSet.getInt("Atk"),
+                    resultSet.getInt("Spe"))
+                );
+
+                //Salvo tutte le abilità
+                while(resultSet.next()) {
+                    pokemon.getAbilities().add("Nome: " + resultSet.getString("Abilità") + " Effetto: " + resultSet.getString("Effetto"));
+                }
+
+                pokemon.setPrimaryType(resultSet.getString("NomeTipo1"));
+                pokemon.setSecondaryType(resultSet.getString("NomeTipo2"));
+
+                return pokemon;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }

@@ -3,18 +3,6 @@ CREATE DATABASE IF NOT EXISTS competitivepokedex;
 USE competitivepokedex;
 
 
-
-CREATE TABLE IF NOT EXISTS statistica(
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    pokemonName varchar(100) NOT NULL,
-    Atk int NOT NULL,
-    Spe int NOT NULL,
-    Def int NOT NULL,
-    SAtk int NOT NULL,
-    SDef int NOT NULL,
-    PS int NOT NULL
-);
-
 CREATE TABLE IF NOT EXISTS Strumento(
 
     Nome varchar(100) NOT NULL PRIMARY KEY,
@@ -83,6 +71,20 @@ CREATE TABLE IF NOT EXISTS Pokemon(
     FOREIGN KEY(NomeTipo2) REFERENCES Tipo(Nome)
 );
 
+CREATE TABLE IF NOT EXISTS statistica(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    pokemonName varchar(100) NOT NULL,
+    Atk int NOT NULL,
+    Spe int NOT NULL,
+    Def int NOT NULL,
+    SAtk int NOT NULL,
+    SDef int NOT NULL,
+    PS int NOT NULL,
+
+    FOREIGN KEY(pokemonName) REFERENCES Pokemon(NomePokemon)
+    );
+
+
 CREATE TABLE IF NOT EXISTS Sviluppa(
     Id int AUTO_INCREMENT PRIMARY KEY NOT NULL,
     NomePokemon varchar(100) NOT NULL,
@@ -105,7 +107,14 @@ CREATE TABLE IF NOT EXISTS Utente(
     Id varchar(100) NOT NULL PRIMARY KEY
 );
 
+
+
+CREATE TABLE IF NOT EXISTS Squadra(
+    NomeSquadra varchar(100) NOT NULL PRIMARY KEY
+);
+
 CREATE TABLE IF NOT EXISTS PokemonSquadra(
+    TeamName varchar(100) NOT NULL,
     PokemonName varchar(100) NOT NULL,
     Strumento varchar(100) NOT NULL,
     Abilità varchar(100) NOT NULL,
@@ -114,6 +123,8 @@ CREATE TABLE IF NOT EXISTS PokemonSquadra(
     Mossa3 varchar(100) NOT NULL,
     Mossa4 varchar(100) NOT NULL,
 
+    PRIMARY KEY(TeamName, PokemonName),
+    FOREIGN KEY(TeamName) REFERENCES Squadra(NomeSquadra),
     FOREIGN KEY(PokemonName) REFERENCES Pokemon(NomePokemon),
     FOREIGN KEY (Strumento) REFERENCES Strumento(Nome),
     FOREIGN KEY(Abilità) REFERENCES Abilità(Nome),
@@ -121,19 +132,7 @@ CREATE TABLE IF NOT EXISTS PokemonSquadra(
     FOREIGN KEY(Mossa2) REFERENCES Mossa(Nome),
     FOREIGN KEY(Mossa3) REFERENCES Mossa(Nome),
     FOREIGN KEY(Mossa4) REFERENCES Mossa(Nome)
-);
-
-CREATE TABLE IF NOT EXISTS Squadra(
-    NomeSquadra varchar(100) NOT NULL PRIMARY KEY,
-    Pokemon1 varchar(100),
-    Pokemon2 varchar(100),
-    Pokemon3 varchar(100),
-    Pokemon4 varchar(100),
-    FOREIGN KEY(Pokemon1) REFERENCES PokemonSquadra(PokemonName),
-    FOREIGN KEY(Pokemon2) REFERENCES PokemonSquadra(PokemonName),
-    FOREIGN KEY(Pokemon3) REFERENCES PokemonSquadra(PokemonName),
-    FOREIGN KEY(Pokemon4) REFERENCES PokemonSquadra(PokemonName)
-);
+    );
 
 CREATE TABLE IF NOT EXISTS Forma(
     Id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -144,5 +143,4 @@ CREATE TABLE IF NOT EXISTS Forma(
     FOREIGN KEY(IdUtente) REFERENCES Utente(Id),
     FOREIGN KEY(NomeSquadra) REFERENCES Squadra(NomeSquadra)
 );
-
 

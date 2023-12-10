@@ -106,4 +106,12 @@ public class Move {
     public void setName(String name) {
         this.name = name;
     }
+
+
+    public String toString(){
+        return "Nome: " + this.name + "\t Power: " + this.power + "\n" +
+                "Priorità: " + this.priority + "\t Tipo: " + this.tipo + "\n" +
+                "Precisione: " + this.accuracy + "\t Categoria: " + this.category + "\n" +
+                "Effetto: " + this.effetto + "\n";
+    }
 }

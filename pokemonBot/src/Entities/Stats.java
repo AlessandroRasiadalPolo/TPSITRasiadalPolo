@@ -76,4 +76,17 @@ public class Stats {
     public void setSpe(int spe) {
         this.spe = spe;
     }
+
+
+    public String toString(){
+        String s = "Statistiche: \n" +
+                "PS: " + this.getPs() + "\n" +
+                "Atk: " + this.getAtt() + "\n" +
+                "Def: " + this.getDef() + "\n" +
+                "Spa: " + this.getSpa() + "\n" +
+                "Sdp: " + this.getSpd() + "\n" +
+                "Spe: " + this.getSpe();
+
+        return s;
+    }
 }

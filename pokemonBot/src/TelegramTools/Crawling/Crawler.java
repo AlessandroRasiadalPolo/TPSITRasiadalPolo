@@ -2,7 +2,6 @@ package TelegramTools.Crawling;
 
 import TelegramTools.Crawling.Json.JsonAnalyzer;
 import TelegramTools.Crawling.Json.JsonObtainer;
-import TelegramTools.Crawling.TimeCounting.PeriodicCount;
 import TelegramTools.Database.DB;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.jsoup.Connection;
@@ -19,10 +18,6 @@ import java.util.LinkedList;
 
 public class Crawler {
 
-    //Prendo la data di oggi
-    private static LocalDate today;
-    private static PeriodicCount periodicCount = new PeriodicCount();
-
 
     /*
     I link che sto cercando di analizzare si trovano all'interno di funzioni javascript Onclick, quindi devo ricavare glu url dalla funzione
@@ -32,14 +27,6 @@ public class Crawler {
 
     public static void crawl(String url, ArrayList<String> urlVisited){
 
-        today = LocalDate.now();
-
-        //Devo salvarmi la prima data in cui faccio partire il programma
-
-        /*currentDate = LocalDate.now();
-        if(currentDate == currentDate.plusDays(40))
-
-         */
 
 
         Document doc = null;

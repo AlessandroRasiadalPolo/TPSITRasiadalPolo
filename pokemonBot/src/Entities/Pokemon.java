@@ -1,5 +1,7 @@
 package Entities;
 
+import TelegramTools.PokemonBot;
+
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -102,5 +104,13 @@ public class Pokemon {
 
     public void setAbilities(ArrayList<String> abilities) {
         this.abilities = abilities;
+    }
+
+    public String toString(){
+        return "Nome: "  + pokemonName + " \nPokedexId: " + this.getPokedexNumber() +  "\n" +
+                "Tipo: " + this.getPrimaryType() + " " + ((this.getSecondaryType() == null) ? "" : this.getSecondaryType()) + "\n" +
+                "Abilità: " + PokemonBot.formatList(this.getAbilities()) + "\n"+
+                "Generazione: " + this.getGeneration() + "\n"
+                + this.getStats().toString();
     }
 }

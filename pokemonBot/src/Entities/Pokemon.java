@@ -1,5 +1,6 @@
 package Entities;
 
+import TelegramTools.BotFunction;
 import TelegramTools.PokemonBot;
 
 import java.awt.*;
@@ -109,7 +110,7 @@ public class Pokemon {
     public String toString(){
         return "Nome: "  + pokemonName + " \nPokedexId: " + this.getPokedexNumber() +  "\n" +
                 "Tipo: " + this.getPrimaryType() + " " + ((this.getSecondaryType() == null) ? "" : this.getSecondaryType()) + "\n" +
-                "Abilità: " + PokemonBot.formatList(this.getAbilities()) + "\n"+
+                "Abilità: " + BotFunction.formatList(this.getAbilities()) + "\n"+
                 "Generazione: " + this.getGeneration() + "\n"
                 + this.getStats().toString();
     }

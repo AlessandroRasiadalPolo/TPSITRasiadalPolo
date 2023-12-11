@@ -2,8 +2,10 @@ package TelegramTools;
 
 import Entities.Move;
 import Entities.Pokemon;
+import Entities.PokemonTeam;
 import TelegramTools.Database.DB;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -124,5 +126,15 @@ public class BotFunction {
 
     }
 
-    public static boolean savePokemonTeam(String pokemons)
+    public static String savePokemonTeam(ArrayList<PokemonTeam> pokemons, String nomeTeam, String userName){
+
+        if(pokemons == null || nomeTeam == null || userName == null)
+            return "Errore, uno dei parametri è nullo";
+
+        if(DB.savePokemonTeam(pokemons, nomeTeam, userName) == 1)
+            return "Il team è stato creato e salvato correttamente!";
+
+        return null;
+
+    }
 }

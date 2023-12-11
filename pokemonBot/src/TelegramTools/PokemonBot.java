@@ -11,6 +11,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.ArrayList;
@@ -48,11 +49,15 @@ public class PokemonBot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         try {
 
-
             if (update.hasMessage() && update.getMessage().hasText()) {
                 String messageText = update.getMessage().getText();
+                Message message = update.getMessage();
+                User user = message.getFrom();
+                String username = user.getUserName();
                 String chatId = update.getMessage().getChatId().toString();
-
+                //Se l'utente vuole creare un team tengo pronta la variabile
+                ArrayList<PokemonTeam> pokemonTeamMember = new ArrayList<>();
+                String teamName = "";
 
                 switch (botState) {
                     case WAITING_FOR_COMMAND:
@@ -122,24 +127,23 @@ public class PokemonBot extends TelegramLongPollingBot {
                             sendMessage.setChatId(chatId);
                             sendMessage.setText("Inserisci il nome della squadra");
                             execute(sendMessage);
-                            List<PokemonTeam> pokemonTeams = new ArrayList<PokemonTeam>();
 
                         }
                         break;
 
                     case WAITING_FOR_POKEMON_NAME:
-                            // Usa il testo del messaggio come il nome del Pokémon
-                            String pokemonName = messageText.trim();
+                        // Usa il testo del messaggio come il nome del Pokémon
+                        String pokemonName = messageText.trim();
 
-                            // Esegui la tua logica per mostrare il Pokémon
-                            HashMap<String, String> pokemonDetails = BotFunction.showSelectedPokemon(pokemonName);
+                        // Esegui la tua logica per mostrare il Pokémon
+                        HashMap<String, String> pokemonDetails = BotFunction.showSelectedPokemon(pokemonName);
 
-                            // Invia l'animazione con la descrizione
-                            SendAnimation sendAnimation = new SendAnimation();
-                            sendAnimation.setChatId(chatIdWaitingForName);
-                            sendAnimation.setAnimation(new InputFile(pokemonDetails.get("gifURL")));
-                            sendAnimation.setCaption(pokemonDetails.get("Description"));
-                            execute(sendAnimation);
+                        // Invia l'animazione con la descrizione
+                        SendAnimation sendAnimation = new SendAnimation();
+                        sendAnimation.setChatId(chatIdWaitingForName);
+                        sendAnimation.setAnimation(new InputFile(pokemonDetails.get("gifURL")));
+                        sendAnimation.setCaption(pokemonDetails.get("Description"));
+                        execute(sendAnimation);
 
                         // Ripristina lo stato per aspettare il prossimo comando
                         botState = BotState.WAITING_FOR_COMMAND;
@@ -197,43 +201,50 @@ public class PokemonBot extends TelegramLongPollingBot {
                         botState = BotState.WAITING_FOR_COMMAND;
                         break;
 
-                    // L'utente ha inserito il nome della squadra
-                    String teamName = messageText.trim();
-                    // Esegui la tua logica per gestire il nome della squadra
+                    case WAITING_FOR_TEAM_NAME:
 
-                    // Invia un messaggio per chiedere i dettagli del primo Pokémon
-                    SendMessage sendFirstPokemonMessage = new SendMessage();
-                    sendFirstPokemonMessage.setChatId(chatIdWaitingForName);
-                    sendFirstPokemonMessage.setText("Inserisci i dettagli del primo Pokémon (Nome, Abilità, Strumento, Mossa1, Mossa2, Mossa3, Mossa4):");
-                    execute(sendFirstPokemonMessage);
+                        // L'utente ha inserito il nome della squadra
+                        teamName = messageText.trim();
+                        // Esegui la tua logica per gestire il nome della squadra
 
-                    // Passa allo stato successivo per aspettare i dettagli del primo Pokémon
-                    botState = BotState.WAITING_FOR_TEAM_MEMBER_DETAILS;
-                    break;
+                        // Invia un messaggio per chiedere i dettagli del primo Pokémon
+                        SendMessage sendFirstPokemonMessage = new SendMessage();
+                        sendFirstPokemonMessage.setChatId(chatIdWaitingForName);
+                        sendFirstPokemonMessage.setText("Inserisci i dettagli del primo Pokémon (Nome, Abilità, Strumento, Mossa1, Mossa2, Mossa3, Mossa4):");
+                        execute(sendFirstPokemonMessage);
 
-                    case WAITING_FOR_TEAM_MEMBER:
+                        // Passa allo stato successivo per aspettare i dettagli del primo Pokémon
+                        botState = BotState.WAITING_FOR_TEAM_MEMBER_DETAILS;
+                        break;
+
+                    case WAITING_FOR_TEAM_MEMBER_DETAILS:
                         // Usa il testo del messaggio come dettagli del Pokémon
-                        String teamMemberDetails = messageText.trim();
+                        String[] teamMemberDetails = messageText.trim().split(", ");
+                        PokemonTeam pokemonTeam = new PokemonTeam();
 
-                        // Esegui la tua logica per gestire i dettagli del Pokémon
-                        boolean success = ;
+                        //Se la sequenza data dall'utente è corretta so già l'ordine di inserimento
+                        pokemonTeam.setPokemonName(teamMemberDetails[0]);
+                        pokemonTeam.setAbiltià(teamMemberDetails[1]);
+                        pokemonTeam.setStrumento(teamMemberDetails[2]);
+                        pokemonTeam.setMossa1(teamMemberDetails[3]);
+                        pokemonTeam.setMossa2(teamMemberDetails[4]);
+                        pokemonTeam.setMossa3(teamMemberDetails[5]);
+                        pokemonTeam.setMossa4(teamMemberDetails[6]);
+
+                        pokemonTeamMember.add(pokemonTeam);
 
                         // Invia un messaggio di conferma o di richiesta di ulteriori dettagli
                         SendMessage sendTeamMemberMessage = new SendMessage();
                         sendTeamMemberMessage.setChatId(chatIdWaitingForName);
-
-                        if (success) {
-                            sendTeamMemberMessage.setText("Pokemon aggiunto con successo alla squadra. Inserisci il prossimo.");
-                        } else {
-                            sendTeamMemberMessage.setText("Formato non valido. Riprova con il formato corretto.");
+                        if(pokemonTeamMember.size() < 1)
+                            sendTeamMemberMessage.setText("Pokemon aggiunto! Inserisci il prossimo");
+                        else {
+                            sendTeamMemberMessage.setText(BotFunction.savePokemonTeam(pokemonTeamMember, teamName, username));
+                            botState = BotState.WAITING_FOR_COMMAND;
                         }
 
                         execute(sendTeamMemberMessage);
 
-                        // Se hai raggiunto 6 Pokémon, ripristina lo stato per aspettare il prossimo comando
-                        if (teamIsComplete()) {
-                            botState = BotState.WAITING_FOR_COMMAND;
-                        }
                         break;
                 }
             }

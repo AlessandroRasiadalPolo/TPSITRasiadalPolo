@@ -611,4 +611,48 @@ public class DB {
         }
 
     }
+
+    public static int savePokemonTeam(ArrayList<PokemonTeam> pokemons, String userName, String nomeTeam){
+
+
+        Connection con = connect();
+
+        try{
+            //Salvo lo username dell'utente
+            Statement stmt = con.createStatement();
+            String sql = "INSERT INTO Utente(Id) VALUES(?)";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1,userName);
+            preparedStatement.execute();
+
+            //Salvo il nome della squadra
+            String sqlTeamName = "INSERT INTO Squadra(NomeSquadra) VALUES (?)";
+            PreparedStatement preparedStatementTeamName = con.prepareStatement(sqlTeamName);
+            preparedStatementTeamName.setString(1,nomeTeam);
+            preparedStatementTeamName.execute();
+
+            //Salvo tutti i pokemon della squadra
+            String sqlPokemon = "INSERT INTO PokemonSquadra(TeamName, PokemonName, Strumento, Abilità, Mossa1, Mossa2, Mossa3, Mossa4) VALUES (?,?,?,?,?,?,?,?)";
+            PreparedStatement preparedStatementPokemon = con.prepareStatement(sqlPokemon);
+
+            for(PokemonTeam p : pokemons) {
+                preparedStatementPokemon.setString(1, nomeTeam);
+                preparedStatementPokemon.setString(2,p.getPokemonName());
+                preparedStatementPokemon.setString(3,p.getStrumento());
+                preparedStatementPokemon.setString(4,p.getAbiltià());
+                preparedStatementPokemon.setString(5,p.getMossa1());
+                preparedStatementPokemon.setString(6,p.getMossa2());
+                preparedStatementPokemon.setString(7,p.getMossa3());
+                preparedStatementPokemon.setString(8,p.getMossa4());
+                preparedStatementPokemon.execute();
+            }
+            stmt.close();
+            con.close();
+            return 1;
+
+
+        } catch (SQLException e) {
+            return -2;
+        }
+    }
 }

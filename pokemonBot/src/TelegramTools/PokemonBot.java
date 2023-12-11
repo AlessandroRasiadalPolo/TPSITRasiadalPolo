@@ -2,6 +2,7 @@ package TelegramTools;
 
 import Entities.Move;
 import Entities.Pokemon;
+import Entities.PokemonTeam;
 import TelegramTools.Database.DB;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendAnimation;
@@ -36,7 +37,9 @@ public class PokemonBot extends TelegramLongPollingBot {
         WAITING_FOR_ABILITY_PER_POKEMON,
         WAITING_FOR_GENERATION,
         WAITING_FOR_MOVES,
-        WAITING_FOR_MOVE
+        WAITING_FOR_MOVE,
+        WAITING_FOR_TEAM_NAME,
+        WAITING_FOR_TEAM_MEMBER_DETAILS
     }
 
     private BotState botState = BotState.WAITING_FOR_COMMAND;
@@ -111,13 +114,25 @@ public class PokemonBot extends TelegramLongPollingBot {
                             sendMessage.setText("Inserisci il nome della mossa:");
                             execute(sendMessage);
                         }
+
+                        if(messageText.equals("/create_team")){
+                            botState = BotState.WAITING_FOR_TEAM_NAME;
+                            chatIdWaitingForName = chatId;
+                            SendMessage sendMessage = new SendMessage();
+                            sendMessage.setChatId(chatId);
+                            sendMessage.setText("Inserisci il nome della squadra");
+                            execute(sendMessage);
+                            List<PokemonTeam> pokemonTeams = new ArrayList<PokemonTeam>();
+
+                        }
                         break;
+
                     case WAITING_FOR_POKEMON_NAME:
                             // Usa il testo del messaggio come il nome del Pokémon
                             String pokemonName = messageText.trim();
 
                             // Esegui la tua logica per mostrare il Pokémon
-                            HashMap<String, String> pokemonDetails = showSelectedPokemon(pokemonName);
+                            HashMap<String, String> pokemonDetails = BotFunction.showSelectedPokemon(pokemonName);
 
                             // Invia l'animazione con la descrizione
                             SendAnimation sendAnimation = new SendAnimation();
@@ -133,7 +148,7 @@ public class PokemonBot extends TelegramLongPollingBot {
                     case WAITING_FOR_POKEMON_ABILITY:
                         String pokemonAbility = messageText.trim();
 
-                        String pokemons = showPokemonsPerAbility(pokemonAbility);
+                        String pokemons = BotFunction.showPokemonsPerAbility(pokemonAbility);
                         SendMessage sendMessage = new SendMessage();
                         sendMessage.setChatId(chatIdWaitingForName);
                         sendMessage.setText(pokemons);
@@ -143,7 +158,7 @@ public class PokemonBot extends TelegramLongPollingBot {
 
                     case WAITING_FOR_ABILITY_PER_POKEMON:
                         String pokemon = messageText.trim();
-                        String abilities = showSelectedPokemonAbilites(pokemon);
+                        String abilities = BotFunction.showSelectedPokemonAbilites(pokemon);
                         SendMessage sendMessageAbilities = new SendMessage();
                         sendMessageAbilities.setChatId(chatIdWaitingForName);
                         sendMessageAbilities.setText(abilities);
@@ -154,7 +169,7 @@ public class PokemonBot extends TelegramLongPollingBot {
 
                     case WAITING_FOR_GENERATION:
                         String generazione = messageText.trim();
-                        String pokemonPerGeneration = showPokemonPerGeneration(generazione);
+                        String pokemonPerGeneration = BotFunction.showPokemonPerGeneration(generazione);
                         SendMessage sendMessagePerGeneration = new SendMessage();
                         sendMessagePerGeneration.setChatId(chatIdWaitingForName);
                         sendMessagePerGeneration.setText(pokemonPerGeneration);
@@ -164,7 +179,7 @@ public class PokemonBot extends TelegramLongPollingBot {
 
                     case WAITING_FOR_MOVES:
                         String pokemon_move = messageText.trim();
-                        String pokemonMoves = showPokemonMoves(pokemon_move);
+                        String pokemonMoves = BotFunction.showPokemonMoves(pokemon_move);
                         SendMessage sendMessageMove = new SendMessage();
                         sendMessageMove.setChatId(chatIdWaitingForName);
                         sendMessageMove.setText(pokemonMoves);
@@ -174,7 +189,7 @@ public class PokemonBot extends TelegramLongPollingBot {
 
                     case WAITING_FOR_MOVE:
                         String move = messageText.trim();
-                        String moveDescription = showMoveDetails(move);
+                        String moveDescription = BotFunction.showMoveDetails(move);
                         SendMessage sendMessageMoveDesc = new SendMessage();
                         sendMessageMoveDesc.setChatId(chatIdWaitingForName);
                         sendMessageMoveDesc.setText(moveDescription);
@@ -182,6 +197,44 @@ public class PokemonBot extends TelegramLongPollingBot {
                         botState = BotState.WAITING_FOR_COMMAND;
                         break;
 
+                    // L'utente ha inserito il nome della squadra
+                    String teamName = messageText.trim();
+                    // Esegui la tua logica per gestire il nome della squadra
+
+                    // Invia un messaggio per chiedere i dettagli del primo Pokémon
+                    SendMessage sendFirstPokemonMessage = new SendMessage();
+                    sendFirstPokemonMessage.setChatId(chatIdWaitingForName);
+                    sendFirstPokemonMessage.setText("Inserisci i dettagli del primo Pokémon (Nome, Abilità, Strumento, Mossa1, Mossa2, Mossa3, Mossa4):");
+                    execute(sendFirstPokemonMessage);
+
+                    // Passa allo stato successivo per aspettare i dettagli del primo Pokémon
+                    botState = BotState.WAITING_FOR_TEAM_MEMBER_DETAILS;
+                    break;
+
+                    case WAITING_FOR_TEAM_MEMBER:
+                        // Usa il testo del messaggio come dettagli del Pokémon
+                        String teamMemberDetails = messageText.trim();
+
+                        // Esegui la tua logica per gestire i dettagli del Pokémon
+                        boolean success = ;
+
+                        // Invia un messaggio di conferma o di richiesta di ulteriori dettagli
+                        SendMessage sendTeamMemberMessage = new SendMessage();
+                        sendTeamMemberMessage.setChatId(chatIdWaitingForName);
+
+                        if (success) {
+                            sendTeamMemberMessage.setText("Pokemon aggiunto con successo alla squadra. Inserisci il prossimo.");
+                        } else {
+                            sendTeamMemberMessage.setText("Formato non valido. Riprova con il formato corretto.");
+                        }
+
+                        execute(sendTeamMemberMessage);
+
+                        // Se hai raggiunto 6 Pokémon, ripristina lo stato per aspettare il prossimo comando
+                        if (teamIsComplete()) {
+                            botState = BotState.WAITING_FOR_COMMAND;
+                        }
+                        break;
                 }
             }
         } catch (Exception e) {
@@ -189,118 +242,5 @@ public class PokemonBot extends TelegramLongPollingBot {
         }
     }
 
-    //Metodo per formattare la lista
-    public static String formatList(List<?> lista) {
-        return lista.stream().map(Object::toString).collect(Collectors.joining(" "));
-    }
-
-    private String showPokemonsPerAbility(String ability){
-        String ris = "I pokemon che possono avere l'abilità " + ability + "sono:" + "\n";
-        ArrayList<String> pokemons = DB.ottieniAbilità(ability);
-        for(String s : pokemons)
-            ris += s + "\n";
-
-        return ris;
-    }
-
-    private HashMap<String, String> showSelectedPokemon(String pokemonName){
-        Pokemon pokemon = DB.ottieniPokemon(pokemonName);
-
-        if(pokemon == null)
-            return null;
-
-        HashMap<String, String> result = new HashMap<>();
-
-        result.put("gifURL", pokemon.getIcon());
-        String getDescription = pokemon.toString();
-
-        result.put("Description", getDescription);
-
-        return result;
-
-
-    }
-
-    private String showSelectedPokemonAbilites(String pokemon){
-        String ris = "Le abilità che " + pokemon + " può imparare sono le seguenti: \n";
-        String[] abilities = DB.ottieniAbilitàperPokemon(pokemon);
-
-        for(String s : abilities)
-        {
-            if(s != null)
-                ris+= s + "\n";
-        }
-
-        return ris;
-    }
-
-    private String showPokemonPerGeneration(String generazione){
-        generazione = generazione.toLowerCase();
-
-        switch (generazione){
-            case "diamante e perla":
-                generazione = "DP";
-                break;
-
-            case "bianco e nero":
-                generazione = "BW";
-                break;
-
-            case "oro e argento":
-                generazione = "GS";
-                break;
-
-            case "rosso e blu":
-                generazione = "RB";
-                break;
-
-            case "scarlatto e violetto":
-                generazione = "SV";
-                break;
-
-            case "sole e luna":
-                generazione = "SM";
-                break;
-
-            case "x e y":
-                generazione = "XY";
-                break;
-
-            case "spada e scudo":
-                generazione = "SS";
-                break;
-
-            case "rubino e zaffiro":
-                generazione = "RS";
-                break;
-
-        }
-
-        ArrayList<String> pokemons = DB.ottieniPokemonperGenerazione(generazione);
-        String ris = "I pokemon appartenenti alla generazione " + generazione + " sono: \n";
-
-        for(String s : pokemons)
-            ris += s + "\n";
-
-        return ris;
-
-    }
-
-    public String showPokemonMoves(String pokemon){
-
-        ArrayList<Move> mosse = DB.ottieniMosse(pokemon);
-        String ris = "Le mosse che " + pokemon + " può imparare sono: ";
-        for(Move mossa :  mosse)
-            ris += mossa.getName() + "\n";
-
-        return ris;
-    }
-
-    public String showMoveDetails(String mossa){
-        Move move = DB.ottieniDettagliMossa(mossa);
-
-        return move.toString();
-
-    }
 
 }

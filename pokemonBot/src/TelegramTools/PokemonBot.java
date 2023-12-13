@@ -372,7 +372,7 @@ public class PokemonBot extends TelegramLongPollingBot {
         // Invia un messaggio di conferma o di richiesta di ulteriori dettagli
         SendMessage sendTeamMemberMessage = new SendMessage();
         sendTeamMemberMessage.setChatId(chatIdWaitingForName);
-        if(pokemonTeamMember.size() < 1)
+        if(pokemonTeamMember.size() < 4)
             sendTeamMemberMessage.setText("Pokemon aggiunto! Inserisci il prossimo");
         else {
             String teams = BotFunction.savePokemonTeam(pokemonTeamMember, username, teamName);

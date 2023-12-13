@@ -3,6 +3,8 @@ package TelegramTools.Crawling;
 import TelegramTools.Crawling.Json.JsonAnalyzer;
 import TelegramTools.Crawling.Json.JsonObtainer;
 import TelegramTools.Database.DB;
+import TelegramTools.Database.DbObtainer;
+import TelegramTools.Database.DbSaver;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -74,7 +76,7 @@ public class Crawler {
 
                 if(doc != null){
 
-                    LinkedList<String> pokemons = DB.savePokemonMoves();
+                    LinkedList<String> pokemons = DbObtainer.savePokemonMoves();
 
                     while(!pokemons.isEmpty()){
                         String urlToVisit = url + pokemons.getFirst();
@@ -96,7 +98,7 @@ public class Crawler {
 
             ArrayList<String> moves = new ArrayList<String>();
 
-            LinkedList<String> pokemons = DB.savePokemonMoves();
+            LinkedList<String> pokemons = DbObtainer.savePokemonMoves();
 
             Elements table = doc.select("table");
 
@@ -106,7 +108,7 @@ public class Crawler {
             for(Element move : tds){
                 moves.add(move.text());
             }
-            DB.saveMoves(moves, pokemonName);
+            DbSaver.saveMoves(moves, pokemonName);
 
             return 1;
         }

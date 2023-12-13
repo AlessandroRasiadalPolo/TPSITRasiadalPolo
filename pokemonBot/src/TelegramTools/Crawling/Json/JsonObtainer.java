@@ -3,6 +3,7 @@ package TelegramTools.Crawling.Json;
 import Entities.*;
 import Entities.Stats;
 import TelegramTools.Database.DB;
+import TelegramTools.Database.DbSaver;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.oracle.truffle.regex.tregex.util.json.Json;
 import org.json.simple.JSONArray;
@@ -34,7 +35,7 @@ public class JsonObtainer {
                         items.add(itemTosave);
                     }
 
-                    if (DB.registerItems(items) == 1)
+                    if (DbSaver.registerItems(items) == 1)
                         System.out.println("Strumenti salvati correttamente!");
                     else
                         System.out.println("Errore durante il salvataggio degli strumenti");
@@ -57,7 +58,7 @@ public class JsonObtainer {
 
                         types.add(typeToSave);
                     }
-                    if (DB.registerType(types) == 1)
+                    if (DbSaver.registerType(types) == 1)
                         System.out.println("Tipi registrati con successo!");
                     else
                         System.out.println("Errore nella registrazione dei tipi");
@@ -73,7 +74,7 @@ public class JsonObtainer {
 
                         abilities.add(abilityTosave);
                     }
-                    if (DB.registerAbility(abilities) == 1)
+                    if (DbSaver.registerAbility(abilities) == 1)
                         System.out.println("Abilità salvate correttamente!");
                     else
                         System.out.println("Errore salvataggio abilità");
@@ -107,7 +108,7 @@ public class JsonObtainer {
                         moves.add(moveTosave);
                     }
 
-                    if(DB.registerMoves(moves) == 1)
+                    if(DbSaver.registerMoves(moves) == 1)
                         System.out.println("Mosse salvate correttamente!");
                     else
                         System.out.println("Errore durante memorizzazione mosse");
@@ -156,12 +157,12 @@ public class JsonObtainer {
 
                     }
 
-                    if (DB.RegisterPokemon(pokemons) == 1)
+                    if (DbSaver.RegisterPokemon(pokemons) == 1)
                         System.out.println("Pokemon salvato correttamente!");
                     else
                         System.out.println("Errore durante il salvataggio!");
 
-                    if (DB.registerStats(pokemons) == 1)
+                    if (DbSaver.registerStats(pokemons) == 1)
                         System.out.println("Statistiche del pokemon salvate correttamente!");
                     else
                         System.out.println("Errore salvataggio statistiche!");

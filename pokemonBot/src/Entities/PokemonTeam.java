@@ -8,6 +8,7 @@ public class PokemonTeam extends Pokemon{
     private String mossa2;
     private String mossa3;
     private String mossa4;
+    private String teamName;
 
     public PokemonTeam(){
         id = 0;
@@ -17,9 +18,10 @@ public class PokemonTeam extends Pokemon{
         mossa2 = "";
         mossa3 = "";
         mossa4 = "";
+        teamName = "";
     }
 
-    public PokemonTeam(String nome, int id, String strumento, String abiltià, String mossa1, String mossa2, String mossa3, String mossa4) {
+    public PokemonTeam(String nome, int id, String strumento, String abiltià, String mossa1, String mossa2, String mossa3, String mossa4, String teamName) {
         this.id = id;
         this.pokemonName = nome;
         this.strumento = strumento;
@@ -28,6 +30,7 @@ public class PokemonTeam extends Pokemon{
         this.mossa2 = mossa2;
         this.mossa3 = mossa3;
         this.mossa4 = mossa4;
+        this.teamName = teamName;
     }
 
     public String getStrumento() {
@@ -84,5 +87,13 @@ public class PokemonTeam extends Pokemon{
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getTeamName() {
+        return teamName;
+    }
+
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
     }
 }

@@ -4,6 +4,8 @@ import Entities.Move;
 import Entities.Pokemon;
 import Entities.PokemonTeam;
 import TelegramTools.Database.DB;
+import TelegramTools.Database.DbObtainer;
+import TelegramTools.Database.DbSaver;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -19,7 +21,7 @@ public class BotFunction {
 
     public static String showPokemonsPerAbility(String ability){
         String ris = "I pokemon che possono avere l'abilità " + ability + "sono:" + "\n";
-        ArrayList<String> pokemons = DB.ottieniAbilità(ability);
+        ArrayList<String> pokemons = DbObtainer.ottieniAbilità(ability);
         for(String s : pokemons)
             ris += s + "\n";
 
@@ -27,7 +29,7 @@ public class BotFunction {
     }
 
     public static HashMap<String, String> showSelectedPokemon(String pokemonName){
-        Pokemon pokemon = DB.ottieniPokemon(pokemonName);
+        Pokemon pokemon = DbObtainer.ottieniPokemon(pokemonName);
 
         if(pokemon == null)
             return null;
@@ -46,7 +48,7 @@ public class BotFunction {
 
     public static String showSelectedPokemonAbilites(String pokemon){
         String ris = "Le abilità che " + pokemon + " può imparare sono le seguenti: \n";
-        String[] abilities = DB.ottieniAbilitàperPokemon(pokemon);
+        String[] abilities = DbObtainer.ottieniAbilitàperPokemon(pokemon);
 
         for(String s : abilities)
         {
@@ -99,7 +101,7 @@ public class BotFunction {
 
         }
 
-        ArrayList<String> pokemons = DB.ottieniPokemonperGenerazione(generazione);
+        ArrayList<String> pokemons = DbObtainer.ottieniPokemonperGenerazione(generazione);
         String ris = "I pokemon appartenenti alla generazione " + generazione + " sono: \n";
 
         for(String s : pokemons)
@@ -111,7 +113,7 @@ public class BotFunction {
 
     public static String showPokemonMoves(String pokemon){
 
-        ArrayList<Move> mosse = DB.ottieniMosse(pokemon);
+        ArrayList<Move> mosse = DbObtainer.ottieniMosse(pokemon);
         String ris = "Le mosse che " + pokemon + " può imparare sono: ";
         for(Move mossa :  mosse)
             ris += mossa.getName() + "\n";
@@ -120,21 +122,21 @@ public class BotFunction {
     }
 
     public static String showMoveDetails(String mossa){
-        Move move = DB.ottieniDettagliMossa(mossa);
+        Move move = DbObtainer.ottieniDettagliMossa(mossa);
 
         return move.toString();
 
     }
 
-    public static String savePokemonTeam(ArrayList<PokemonTeam> pokemons, String nomeTeam, String userName){
+    public static String savePokemonTeam(ArrayList<PokemonTeam> pokemons, String userName, String nomeTeam){
 
         if(pokemons == null || nomeTeam == null || userName == null)
             return "Errore, uno dei parametri è nullo";
 
-        if(DB.savePokemonTeam(pokemons, nomeTeam, userName) == 1)
+        if(DbSaver.savePokemonTeam(pokemons, userName, nomeTeam) == 1)
             return "Il team è stato creato e salvato correttamente!";
-
-        return null;
-
+        else
+            return "Errore nel salvataggio del team!";
     }
+
 }

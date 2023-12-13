@@ -1,4 +1,5 @@
 import TelegramTools.Crawling.Crawler;
+import TelegramTools.Database.DB;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
@@ -14,6 +15,7 @@ public class Main {
 
     public static void main(String[] args) {
 
+        //Eseguo le 2 funzioni periodicamente
         eseguiCrawl();
         eseguiCrawlPokemonPage();
 
@@ -31,6 +33,12 @@ public class Main {
         Duration duration = Duration.between(ultimoEsecuzioneCrawl, now);
 
         if (duration.toDays() >= 730) {  // 2 anni hanno circa 730 giorni
+
+            if(DB.svuotaDatabase())
+                System.out.println("Drop del database avvenuto correttamente");
+            else
+                System.out.println("Errore drop del database");
+
             Crawler.crawl("https://www.smogon.com/dex/", new ArrayList<String>());
             ultimoEsecuzioneCrawl = now;
         } else {

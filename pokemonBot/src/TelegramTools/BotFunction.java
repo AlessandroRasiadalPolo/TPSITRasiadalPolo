@@ -139,4 +139,21 @@ public class BotFunction {
             return "Errore nel salvataggio del team!";
     }
 
+    public static String showTeamList()
+    {
+        String ris = "Ecco i nomi team che hai creato: \n";
+
+
+
+        ArrayList<String> teams = DbObtainer.ottieniListaTeam();
+
+        if(teams == null)
+            return null;
+
+        for(String s : teams)
+            ris += s + "\n";
+
+        return ris;
+    }
+
 }

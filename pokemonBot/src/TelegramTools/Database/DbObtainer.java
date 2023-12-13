@@ -242,24 +242,26 @@ public class DbObtainer extends DB{
 
     }
 
-    public PokemonTeam[] ottieniListaTeam(){
+    public static ArrayList<String> ottieniListaTeam(){
 
         Connection con = connect();
+        ArrayList<String> risultato = new ArrayList<String>();
 
         try {
             Statement stmt = con.createStatement();
-            String sql = "";
+            String sql = "SELECT * FROM Squadra";
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            while(resultSet.next()){
+            while(resultSet.next())
+                risultato.add(resultSet.getString("NomeSquadra"));
 
-            }
+            return risultato;
+
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            return null;
         }
 
-        return null;
     }
 
     public static LinkedList<String> savePokemonMoves() {

@@ -646,6 +646,13 @@ public class DB {
                 preparedStatementPokemon.setString(8,p.getMossa4());
                 preparedStatementPokemon.execute();
             }
+
+            String sql = "INSERT INTO Squadra(NomeSquadra) VALUES (?)";
+            PreparedStatement preparedStatementTeamName = con.prepareStatement(sqlTeamName);
+            preparedStatementTeamName.setString(1,nomeTeam);
+            preparedStatementTeamName.execute();
+
+
             stmt.close();
             con.close();
             return 1;

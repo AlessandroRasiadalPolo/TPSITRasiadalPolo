@@ -1,5 +1,5 @@
 <div>
-  <h1>Istruzioni per l'utilizzo del bot di telegram
+  <h1>Istruzioni per l'utilizzo del bot di telegram nel progetto PokemonBot
   </h1>
 
   <ol>

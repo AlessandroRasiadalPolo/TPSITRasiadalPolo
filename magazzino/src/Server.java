@@ -91,6 +91,28 @@ public class Server{
 
     private static synchronized void setProductQuantity(int productCode, int newQuantity) {
         productQuantities.put(productCode, newQuantity);
+        writeIntoFile();
+    }
+
+    private static boolean writeIntoFile(){
+        try {
+            File file = new File("src/products.txt");
+            file.delete();
+
+            //Prendo il file
+            FileWriter myWriter = new FileWriter("src/products.txt");
+
+            for(Map.Entry<Integer, Integer> set : productQuantities.entrySet()){
+                myWriter.write(set.getKey() + " " + set.getValue() + "\n");
+            }
+            myWriter.close();
+            System.out.println("Successfully wrote to the file.");
+            return true;
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+        return false;
     }
 
 }

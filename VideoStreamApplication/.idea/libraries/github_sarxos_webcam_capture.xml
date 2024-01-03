@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="github.sarxos.webcam.capture" type="repository">
+    <properties maven-id="com.github.sarxos:webcam-capture:0.3.3" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/github/sarxos/webcam-capture/0.3.3/webcam-capture-0.3.3.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/jhlabs/filters/2.0.235/filters-2.0.235.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/nativelibs4java/bridj/0.6.1/bridj-0.6.1.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/google/android/tools/dx/1.7/dx-1.7.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.6.4/slf4j-api-1.6.4.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/ch/qos/logback/logback-classic/0.9.18/logback-classic-0.9.18.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/ch/qos/logback/logback-core/0.9.18/logback-core-0.9.18.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
